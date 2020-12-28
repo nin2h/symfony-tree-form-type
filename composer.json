@@ -1,0 +1,31 @@
+{
+    "name": "mrself/symfony-tree-form-type",
+    "type": "project",
+    "license": "MIT",
+    "description": "Symfony package for form tree type",
+    "require": {
+        "php": "^7.2.0",
+        "symfony/form": "^4",
+        "symfony/framework-bundle": "^4",
+        "symfony/yaml": "^5.2"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^7"
+    },
+    "config": {
+        "preferred-install": {
+            "*": "dist"
+        },
+        "sort-packages": true
+    },
+    "autoload": {
+        "psr-4": {
+            "Mrself\\TreeTypeBundle\\": "./src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Mrself\\TreeTypeBundle\\Tests\\": "./tests/"
+        }
+    }
+}
