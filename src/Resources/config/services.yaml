@@ -1,3 +1,8 @@
-Mrself\TreeTypeBundle\MrTreeType:
-  class: Mrself\TreeTypeBundle\MrTreeType
-  autoconfigure: true
+services:
+  _defaults:
+    public: true
+    autowire: true
+    autoconfigure: true
+
+  Mrself\TreeTypeBundle\MrTreeType:
+    class: Mrself\TreeTypeBundle\MrTreeType
