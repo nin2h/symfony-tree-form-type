@@ -1,0 +1,3 @@
+Mrself\TreeTypeBundle\MrTreeType:
+  class: Mrself\TreeTypeBundle\MrTreeType
+  autoconfigure: true
