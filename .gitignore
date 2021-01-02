@@ -1,3 +1,5 @@
 /vendor
+/assets/node_modules
+/assets/dist
 .phpunit.result.cache
 /var
