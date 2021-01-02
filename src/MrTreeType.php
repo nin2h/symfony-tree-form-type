@@ -2,13 +2,54 @@
 
 namespace Mrself\TreeTypeBundle;
 
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\CallbackTransformer;
+use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class MrTreeType extends AbstractType
 {
+    /**
+     * @var EntityManagerInterface
+     */
+    private $em;
+
+    public function __construct(EntityManagerInterface $em)
+    {
+        $this->em = $em;
+    }
+
+    public function buildForm(FormBuilderInterface $builder, array $options)
+    {
+        $builder->addViewTransformer(new CallbackTransformer(
+            function ($normValue) use ($options) {
+                if ($options['multiple']) {
+                    if (!$normValue) {
+                        return [];
+                    }
+
+                    return $normValue->map(function ($itemValue) {
+                        return $itemValue->getId();
+                    });
+                }
+
+                return $normValue ? $normValue->getId() : '';
+            },
+            function ($viewValue) use ($options) {
+                $repository = $this->em->getRepository($options['class']);
+
+                if ($options['multiple']) {
+                    return $repository->findBy(['id' => $viewValue]);
+                }
+
+                return $repository->find($viewValue);
+            }
+        ));
+    }
+
     public function buildView(FormView $view, FormInterface $form, array $options)
     {
 
@@ -16,6 +57,14 @@ class MrTreeType extends AbstractType
 
     public function configureOptions(OptionsResolver $resolver)
     {
-        
+        $resolver->setDefaults([
+            'multiple' => false,
+            'id_prefix' => '',
+            'cascade_select' => false,
+            'class' =>  null
+        ]);
+
+        $resolver->setRequired(['tree']);
+        $resolver->setAllowedTypes('tree', 'array');
     }
 }
