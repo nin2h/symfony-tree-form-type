@@ -1,0 +1,19 @@
+framework:
+  test: true
+  secret: test
+  router:
+    resource: "%kernel.root_dir%/config/routing.yml"
+  fragments:
+    enabled: true
+
+doctrine:
+  dbal:
+    driver:   pdo_sqlite
+    path:     "%kernel.root_dir%/data/db.sqlite"
+
+  orm:
+    auto_mapping: true
+
+services:
+  _defaults:
+    public: true
