@@ -1,4 +1,8 @@
 {% block mr_tree_widget %}
     {{ form_label(form) }}
-    <div class="mrTreeWidget"></div>
+    <div class="mrTreeWidget" data-mr-tree-widget='{"name": "{{ field_id }}"}'></div>
+
+    <script>
+        window['{{ field_id }}'] = {{ tree | json_encode }}
+    </script>
 {% endblock %}

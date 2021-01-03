@@ -28,6 +28,7 @@ class MrTreeTypeTest extends KernelTestCase
 
         $mrTreeTypeBlockName = 'mrTreeWidget';
         $this->assertStringContainsString($mrTreeTypeBlockName, $html);
+        $this->assertStringContainsString('Item 1', $html);
     }
 
     protected static function getKernelClass()
