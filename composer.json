@@ -16,7 +16,8 @@
         "symfony/doctrine-bridge": "^4",
         "symfony/http-kernel": "^4",
         "symfony/security": "^4",
-        "symfony/twig-bridge": "^4"
+        "symfony/twig-bridge": "^4",
+        "symfony/twig-bundle": "^4"
     },
     "config": {
         "preferred-install": {
