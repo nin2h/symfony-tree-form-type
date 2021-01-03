@@ -4,6 +4,7 @@ namespace Mrself\TreeTypeBundle\Tests\Functional;
 
 use Mrself\TreeTypeBundle\MrTreeType;
 use Symfony\Component\Form\FormFactory;
+use Twig\Environment;
 
 class MrTreeTypeTest extends KernelTestCase
 {
@@ -21,6 +22,12 @@ class MrTreeTypeTest extends KernelTestCase
             ]
         ]);
         $view = $form->getForm()->createView();
+        /** @var Environment $twig */
+        $twig = static::$container->get('twig');
+        $html = $twig->createTemplate('{{ form(form) }}')->render(['form' => $view]);
+
+        $mrTreeTypeBlockName = 'mrTreeWidget';
+        $this->assertStringContainsString($mrTreeTypeBlockName, $html);
     }
 
     protected static function getKernelClass()
