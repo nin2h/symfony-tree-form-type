@@ -67,5 +67,21 @@ class MrTreeType extends AbstractType
 
         $resolver->setRequired(['tree']);
         $resolver->setAllowedTypes('tree', 'array');
+
+        $resolver->setNormalizer('tree', function (Options $options, array $tree): array {
+            return array_map(function ($item) {
+                if (is_array($item)) {
+                    return $item;
+                }
+
+                $id = get_class($item) . ':' . $item->getId();
+                $parent = $item->getParent() ? $item->getParent()->getId() : '#';
+                return [
+                    'id' => $id,
+                    'parent' => $parent,
+                    'text' => $item->getName()
+                ];
+            }, $tree);
+        });
     }
 }
