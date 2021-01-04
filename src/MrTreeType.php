@@ -62,7 +62,8 @@ class MrTreeType extends AbstractType
             'multiple' => false,
             'id_prefix' => '',
             'cascade_select' => false,
-            'class' =>  null
+            'class' =>  null,
+            'data_class' => null
         ]);
 
         $resolver->setRequired(['tree']);
