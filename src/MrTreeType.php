@@ -33,7 +33,7 @@ class MrTreeType extends AbstractType
 
                     return $normValue->map(function ($itemValue) {
                         return $itemValue->getId();
-                    });
+                    })->toArray();
                 }
 
                 return $normValue ? $normValue->getId() : '';
