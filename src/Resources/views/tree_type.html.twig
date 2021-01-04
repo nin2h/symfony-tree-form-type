@@ -3,6 +3,6 @@
     <div class="mrTreeWidget" data-mr-tree-widget='{"name": "{{ field_id }}"}'></div>
 
     <script>
-        window['{{ field_id }}'] = {{ tree | json_encode }}
+        window['{{ field_id }}'] = {{ tree | json_encode | raw }}
     </script>
 {% endblock %}
