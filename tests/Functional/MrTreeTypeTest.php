@@ -39,12 +39,7 @@ class MrTreeTypeTest extends KernelTestCase
 
     public function testItAddsSelectedStateToTreeItemsWhichAreSelected()
     {
-        $entity = new class {
-            public function getId()
-            {
-                return 1;
-            }
-        };
+        $entity = $this->createEntity(1);
         $collection = new ArrayCollection([$entity]);
 
         /** @var FormFactory $formFactory */
