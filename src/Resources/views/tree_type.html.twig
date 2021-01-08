@@ -5,6 +5,8 @@
     </div>
 
     <script>
-        window['{{ field_id }}'] = {{ tree | json_encode | raw }}
+        window['{{ field_id }}'] = {
+            data: {{ tree | json_encode | raw }}
+        };
     </script>
 {% endblock %}
