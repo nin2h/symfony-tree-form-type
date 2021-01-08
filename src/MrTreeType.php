@@ -2,6 +2,7 @@
 
 namespace Mrself\TreeTypeBundle;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\CallbackTransformer;
@@ -51,7 +52,7 @@ class MrTreeType extends AbstractType
                 $repository = $this->em->getRepository($options['class']);
 
                 if ($options['multiple']) {
-                    return $repository->findBy(['id' => $viewValue]);
+                    return new ArrayCollection($repository->findBy(['id' => $viewValue]));
                 }
 
                 return $repository->find($viewValue);
