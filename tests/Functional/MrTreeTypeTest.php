@@ -120,8 +120,7 @@ class MrTreeTypeTest extends KernelTestCase
             'formOptions' => ['multiple' => true]
         ]);
 
-        $twig = static::$container->get('twig');
-        $html = $twig->createTemplate('{{ form(form) }}')->render(['form' => $form->createView()]);
+        $html = $this->renderForm($form);
         $this->assertStringContainsString('"selected"', $html);
 
         $form->submit(['tree_field' => [1, 2]]);
@@ -179,6 +178,12 @@ class MrTreeTypeTest extends KernelTestCase
                 'class' => 'EntityClass',
             ]))
             ->getForm();
+    }
+
+    public function renderForm(FormInterface $form): string
+    {
+        $twig = static::$container->get('twig');
+        return $twig->createTemplate('{{ form(form) }}')->render(['form' => $form->createView()]);
     }
 
     protected static function getKernelClass()
