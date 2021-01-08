@@ -69,13 +69,7 @@ class MrTreeTypeTest extends KernelTestCase
 
     public function testCanHandleSubmittedData()
     {
-        $entity = new class {
-            public function getId()
-            {
-                return 1;
-            }
-        };
-
+        $entity = $this->createEntity(1);
         $repository = $this->makeRepositoryMock(
             'findBy',
             ['id' => [1]],
@@ -105,25 +99,9 @@ class MrTreeTypeTest extends KernelTestCase
 
     public function testViewTransformer()
     {
-        $entity = new class {
-            public function getId()
-            {
-                return 1;
-            }
-        };
+        $entity = $this->createEntity(1);
+        $entity2 = $this->createEntity(2);
 
-        $entity2 = new class {
-            public function getId()
-            {
-                return 2;
-            }
-        };
-
-        $repository = $this->createMock(ServiceEntityRepository::class);
-        $repository->expects($this->once())
-            ->method('findBy')
-            ->with(['id' => [1, 2]])
-            ->willReturn([$entity, $entity2]);
         $repository = $this->makeRepositoryMock(
             'findBy',
             ['id' => [1, 2]],
@@ -163,6 +141,20 @@ class MrTreeTypeTest extends KernelTestCase
             ->willReturn($return);
 
         return $repository;
+    }
+
+    private function createEntity(int $id)
+    {
+        $entity = new class {
+            public $id;
+            public function getId()
+            {
+                return $this->id;
+            }
+        };
+        $entity->id = $id;
+
+        return $entity;
     }
 
     private function setEntityManagerToTreeType($repository)
