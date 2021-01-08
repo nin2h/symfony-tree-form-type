@@ -114,6 +114,64 @@ class MrTreeTypeTest extends KernelTestCase
         $this->assertEquals(1, $data['tree_field'][0]->getId());
     }
 
+    public function testViewTransformer()
+    {
+        $entity = new class {
+            public function getId()
+            {
+                return 1;
+            }
+        };
+
+        $entity2 = new class {
+            public function getId()
+            {
+                return 2;
+            }
+        };
+
+        $repository = $this->createMock(ServiceEntityRepository::class);
+        $repository->expects($this->once())
+            ->method('findBy')
+            ->with(['id' => [1, 2]])
+            ->willReturn([$entity, $entity2]);
+
+        $em = $this->createMock(EntityManager::class);
+        $em->expects($this->once())
+            ->method('getRepository')
+            ->with('EntityClass')
+            ->willReturn($repository);
+
+        /** @var MrTreeType $mrTreeType */
+        $mrTreeType = static::$container->get(MrTreeType::class);
+        $mrTreeType->setEntityManager($em);
+
+        /** @var FormFactory $formFactory */
+        $formFactory = static::$container->get('form.factory');
+        $formBuilder = $formFactory->createBuilder(FormType::class, ['tree_field' => new ArrayCollection([$entity])])
+            ->add('tree_field', MrTreeType::class, [
+                'tree' => [
+                    [
+                        'id' => 1,
+                        'parent' => '#',
+                        'text' => 'Item 1'
+                    ]
+                ],
+                'multiple' => true,
+                'class' => 'EntityClass',
+            ]);
+        $form = $formBuilder->getForm();
+
+        $twig = static::$container->get('twig');
+        $html = $twig->createTemplate('{{ form(form) }}')->render(['form' => $form->createView()]);
+        $this->assertStringContainsString('"selected"', $html);
+
+        $form->submit(['tree_field' => [1, 2]]);
+        $form->isValid();
+        $data = $form->getData();
+        $this->assertEquals(1, $data['tree_field'][0]->getId());
+    }
+
     protected static function getKernelClass()
     {
         return TestKernel::class;
