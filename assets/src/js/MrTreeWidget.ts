@@ -22,9 +22,19 @@ export default class MrTreeWidget {
 
     init(options: Options) {
         const defaults = MrTreeWidget.getDefaults();
-        this.options = {...defaults, ...options};
+        const globalOptions = this.getGlobalOptions(options);
+        this.options = {...defaults, ...options, ...globalOptions};
         this.$el = $(options.el);
         this.$el.jstree(this.getJsTreeOptions());
+    }
+
+    getGlobalOptions(options: Options) {
+        const id: string = options.id;
+        if (id) {
+            return (window as any)[id];
+        }
+
+        return {};
     }
 
     getJsTreeOptions() {
