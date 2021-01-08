@@ -76,21 +76,12 @@ class MrTreeTypeTest extends KernelTestCase
             }
         };
 
-        $repository = $this->createMock(ServiceEntityRepository::class);
-        $repository->expects($this->once())
-            ->method('findBy')
-            ->with(['id' => [1]])
-            ->willReturn([$entity]);
-
-        $em = $this->createMock(EntityManager::class);
-        $em->expects($this->once())
-            ->method('getRepository')
-            ->with('EntityClass')
-            ->willReturn($repository);
-
-        /** @var MrTreeType $mrTreeType */
-        $mrTreeType = static::$container->get(MrTreeType::class);
-        $mrTreeType->setEntityManager($em);
+        $repository = $this->makeRepositoryMock(
+            'findBy',
+            ['id' => [1]],
+            [$entity]
+        );
+        $this->setEntityManagerToTreeType($repository);
 
         $form = $this->makeForm([
             'formOptions' => ['multiple' => true],
@@ -133,16 +124,13 @@ class MrTreeTypeTest extends KernelTestCase
             ->method('findBy')
             ->with(['id' => [1, 2]])
             ->willReturn([$entity, $entity2]);
+        $repository = $this->makeRepositoryMock(
+            'findBy',
+            ['id' => [1, 2]],
+            [$entity, $entity2]
+        );
 
-        $em = $this->createMock(EntityManager::class);
-        $em->expects($this->once())
-            ->method('getRepository')
-            ->with('EntityClass')
-            ->willReturn($repository);
-
-        /** @var MrTreeType $mrTreeType */
-        $mrTreeType = static::$container->get(MrTreeType::class);
-        $mrTreeType->setEntityManager($em);
+        $this->setEntityManagerToTreeType($repository);
 
         $form = $this->makeForm([
             'data' => new ArrayCollection([$entity]),
@@ -164,6 +152,30 @@ class MrTreeTypeTest extends KernelTestCase
         $form->isValid();
         $data = $form->getData();
         $this->assertEquals(1, $data['tree_field'][0]->getId());
+    }
+
+    private function makeRepositoryMock(string $method, $with, $return)
+    {
+        $repository = $this->createMock(ServiceEntityRepository::class);
+        $repository->expects($this->once())
+            ->method($method)
+            ->with($with)
+            ->willReturn($return);
+
+        return $repository;
+    }
+
+    private function setEntityManagerToTreeType($repository)
+    {
+        $em = $this->createMock(EntityManager::class);
+        $em->expects($this->once())
+            ->method('getRepository')
+            ->with('EntityClass')
+            ->willReturn($repository);
+
+        /** @var MrTreeType $mrTreeType */
+        $mrTreeType = static::$container->get(MrTreeType::class);
+        $mrTreeType->setEntityManager($em);
     }
 
     private function makeForm(array $options): FormInterface
