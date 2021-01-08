@@ -4,10 +4,12 @@ namespace Mrself\TreeTypeBundle\Tests\Functional;
 
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\EntityManager;
 use Mrself\TreeTypeBundle\MrTreeType;
 use Symfony\Component\Form\Extension\Core\Type\FormType;
 use Symfony\Component\Form\FormFactory;
+use Symfony\Component\Form\FormInterface;
 use Twig\Environment;
 
 class MrTreeTypeTest extends KernelTestCase
@@ -90,21 +92,17 @@ class MrTreeTypeTest extends KernelTestCase
         $mrTreeType = static::$container->get(MrTreeType::class);
         $mrTreeType->setEntityManager($em);
 
-        /** @var FormFactory $formFactory */
-        $formFactory = static::$container->get('form.factory');
-        $formBuilder = $formFactory->createBuilder(FormType::class, ['tree_field' => new ArrayCollection()])
-            ->add('tree_field', MrTreeType::class, [
-                'tree' => [
-                    [
-                        'id' => 1,
-                        'parent' => '#',
-                        'text' => 'Item 1'
-                    ]
-                ],
-                'multiple' => true,
-                'class' => 'EntityClass',
-            ]);
-        $form = $formBuilder->getForm();
+        $form = $this->makeForm([
+            'formOptions' => ['multiple' => true],
+            'tree' => [
+                [
+                    'id' => 1,
+                    'parent' => '#',
+                    'text' => 'Item 1'
+                ]
+            ],
+            'data' => new ArrayCollection()
+        ]);
 
         $twig = static::$container->get('twig');
         $html = $twig->createTemplate('{{ form(form) }}')->render(['form' => $form->createView()]);
@@ -146,21 +144,17 @@ class MrTreeTypeTest extends KernelTestCase
         $mrTreeType = static::$container->get(MrTreeType::class);
         $mrTreeType->setEntityManager($em);
 
-        /** @var FormFactory $formFactory */
-        $formFactory = static::$container->get('form.factory');
-        $formBuilder = $formFactory->createBuilder(FormType::class, ['tree_field' => new ArrayCollection([$entity])])
-            ->add('tree_field', MrTreeType::class, [
-                'tree' => [
-                    [
-                        'id' => 1,
-                        'parent' => '#',
-                        'text' => 'Item 1'
-                    ]
-                ],
-                'multiple' => true,
-                'class' => 'EntityClass',
-            ]);
-        $form = $formBuilder->getForm();
+        $form = $this->makeForm([
+            'data' => new ArrayCollection([$entity]),
+            'tree' => [
+                [
+                    'id' => 1,
+                    'parent' => '#',
+                    'text' => 'Item 1'
+                ]
+            ],
+            'formOptions' => ['multiple' => true]
+        ]);
 
         $twig = static::$container->get('twig');
         $html = $twig->createTemplate('{{ form(form) }}')->render(['form' => $form->createView()]);
@@ -170,6 +164,19 @@ class MrTreeTypeTest extends KernelTestCase
         $form->isValid();
         $data = $form->getData();
         $this->assertEquals(1, $data['tree_field'][0]->getId());
+    }
+
+    private function makeForm(array $options): FormInterface
+    {
+        /** @var FormFactory $formFactory */
+        $formFactory = static::$container->get('form.factory');
+
+        return $formFactory->createBuilder(FormType::class, ['tree_field' => $options['data']])
+            ->add('tree_field', MrTreeType::class, array_merge($options['formOptions'], [
+                'tree' => $options['tree'],
+                'class' => 'EntityClass',
+            ]))
+            ->getForm();
     }
 
     protected static function getKernelClass()
