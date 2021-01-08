@@ -3,4 +3,5 @@ export default interface Options {
     data?: Object,
     cascadeSelect?: boolean,
     id?: string,
+    multiple?: boolean,
 }

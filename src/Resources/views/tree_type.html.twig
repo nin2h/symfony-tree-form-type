@@ -6,7 +6,8 @@
 
     <script>
         window['{{ field_id }}'] = {
-            data: {{ tree | json_encode | raw }}
+            data: {{ tree | json_encode | raw }},
+            multiple: {{ multiple }}
         };
     </script>
 {% endblock %}

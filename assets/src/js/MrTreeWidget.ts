@@ -42,7 +42,8 @@ export default class MrTreeWidget {
 
         return {
             core: {
-                data: this.options.data
+                data: this.options.data,
+                multiple: this.options.multiple
             },
             sort: function (a: string, b: string) {
                 return self.sort(this.get_node(a), this.get_node(b));
