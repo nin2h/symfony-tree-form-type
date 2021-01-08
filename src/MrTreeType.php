@@ -60,6 +60,11 @@ class MrTreeType extends AbstractType
         ));
     }
 
+    public function setEntityManager($em)
+    {
+        $this->em = $em;
+    }
+
     public function buildView(FormView $view, FormInterface $form, array $options)
     {
         $view->vars['field_id'] = md5($form->getName()) . 'mrTreeWidget';
