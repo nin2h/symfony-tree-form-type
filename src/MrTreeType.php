@@ -8,6 +8,7 @@ use Symfony\Component\Form\CallbackTransformer;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
+use Symfony\Component\OptionsResolver\Options;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class MrTreeType extends AbstractType
@@ -39,6 +40,14 @@ class MrTreeType extends AbstractType
                 return $normValue ? $normValue->getId() : '';
             },
             function ($viewValue) use ($options) {
+                if (!$viewValue) {
+                    if ($options['multiple']) {
+                        return [];
+                    }
+
+                    return null;
+                }
+
                 $repository = $this->em->getRepository($options['class']);
 
                 if ($options['multiple']) {
@@ -81,6 +90,7 @@ class MrTreeType extends AbstractType
             'id_prefix' => '',
             'cascade_select' => false,
             'class' =>  null,
+            'compound' => false,
             'data_class' => null
         ]);
 
