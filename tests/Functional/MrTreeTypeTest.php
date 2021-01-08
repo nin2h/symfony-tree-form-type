@@ -89,8 +89,6 @@ class MrTreeTypeTest extends KernelTestCase
             'data' => new ArrayCollection()
         ]);
 
-        $twig = static::$container->get('twig');
-        $html = $twig->createTemplate('{{ form(form) }}')->render(['form' => $form->createView()]);
         $form->submit(['tree_field' => [1]]);
         $form->isValid();
         $data = $form->getData();
