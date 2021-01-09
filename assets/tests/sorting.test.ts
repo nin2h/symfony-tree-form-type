@@ -1,6 +1,6 @@
 import MrTreeWidget from "@/MrTreeWidget";
 
-test('test', () => {
+test('"id" option is included in instance "options" property"', () => {
     $(`<div class="mrTreeWidget" data-mr-tree-widget='{"id": "tree1"}'><div class="mrTreeWidget__tree"></div></div>`)
         .appendTo($('body'));
     const instance = MrTreeWidget.initByEl($('.mrTreeWidget')[0]);
