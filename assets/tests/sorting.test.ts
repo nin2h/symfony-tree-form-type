@@ -1,59 +1,50 @@
-import MrTreeWidget from "@/MrTreeWidget";
+import TestWidget from "./TestWidget";
 
 test('it can sort by weight', () => {
-    const $el = $(`<div class="mrTreeWidget" data-mr-tree-widget='{"id": "tree1"}'><div class="mrTreeWidget__tree"></div></div>`)
-        .appendTo($('body'));
+    const testWidget = TestWidget.init({
+        globalOptions: {
+            data: [
+                {
+                    id: 1,
+                    parent: '#',
+                    text: 'Item 1',
+                    weight: 1
+                },
+                {
+                    id: 2,
+                    parent: '#',
+                    text: 'Item 2',
+                    weight: 0
+                }
+            ]
+        }
+    });
 
-    (window as any).tree1 = {
-        data: [
-            {
-                id: 1,
-                parent: '#',
-                text: 'Item 1',
-                weight: 1
-            },
-            {
-                id: 2,
-                parent: '#',
-                text: 'Item 2',
-                weight: 0
-            }
-        ]
-    };
-
-    MrTreeWidget.initByEl($el);
-    const $nodes = $el.find('.jstree-node');
-    const $node1 = $nodes.first();
-    const $node2 = $nodes.last();
-
-    expect($node1.text()).toContain('Item 2');
-    expect($node2.text()).toContain('Item 1');
+    const nodesText = testWidget.getNodesText();
+    expect(nodesText[0]).toContain('Item 2');
+    expect(nodesText[1]).toContain('Item 1');
 });
 
 test('it can sort alphabetically', () => {
-    const $el = $(`<div class="mrTreeWidget" data-mr-tree-widget='{"id": "tree1"}'><div class="mrTreeWidget__tree"></div></div>`)
-        .appendTo($('body'));
 
-    (window as any).tree1 = {
-        data: [
-            {
-                id: 1,
-                parent: '#',
-                text: 'Item 2',
-            },
-            {
-                id: 2,
-                parent: '#',
-                text: 'Item 1',
-            }
-        ]
-    };
+    const testWidget = TestWidget.init({
+        globalOptions: {
+            data: [
+                {
+                    id: 1,
+                    parent: '#',
+                    text: 'Item 2',
+                },
+                {
+                    id: 2,
+                    parent: '#',
+                    text: 'Item 1',
+                }
+            ]
+        }
+    });
 
-    MrTreeWidget.initByEl($el);
-    const $nodes = $el.find('.jstree-node');
-    const $node1 = $nodes.first();
-    const $node2 = $nodes.last();
-
-    expect($node1.text()).toContain('Item 1');
-    expect($node2.text()).toContain('Item 2');
+    const nodesText = testWidget.getNodesText();
+    expect(nodesText[0]).toContain('Item 1');
+    expect(nodesText[1]).toContain('Item 2');
 });
