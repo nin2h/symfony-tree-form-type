@@ -59,12 +59,13 @@ export default class MrTreeWidget {
             },
             sort: function (a: string, b: string) {
                 return self.sort(this.get_node(a), this.get_node(b));
-            }
+            },
+            plugins: ['sort']
         }
     }
 
     protected sort(a: any, b: any) {
-        if (a.original.weight && b.original.weight) {
+        if (a.original.weight !== undefined && b.original.weight !== undefined) {
             return this.compareByWeight(a, b);
         }
 
