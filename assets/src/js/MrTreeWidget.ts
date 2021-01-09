@@ -15,7 +15,7 @@ export default class MrTreeWidget {
         };
     }
 
-    static init(options: Options) {
+    public static init(options: Options) {
         const instance = new MrTreeWidget();
         instance.init(options);
         return instance;
@@ -25,7 +25,7 @@ export default class MrTreeWidget {
         return this.options;
     }
 
-    init(options: Options) {
+    public init(options: Options) {
         this.$el = $(options.el);
 
         const defaults = MrTreeWidget.getDefaults();
@@ -35,12 +35,12 @@ export default class MrTreeWidget {
         this.initJstree();
     }
 
-    initJstree() {
+    protected initJstree() {
         this.$el.find(`.${this.options.name}__tree`)
             .jstree(this.getJsTreeOptions());
     }
 
-    getGlobalOptions(options: Options) {
+    protected getGlobalOptions(options: Options) {
         const id: string = options.id;
         if (id) {
             return (window as any)[id];
@@ -49,7 +49,7 @@ export default class MrTreeWidget {
         return {};
     }
 
-    getJsTreeOptions() {
+    protected getJsTreeOptions() {
         const self = this;
 
         return {
@@ -63,7 +63,7 @@ export default class MrTreeWidget {
         }
     }
 
-    sort(a: any, b: any) {
+    protected sort(a: any, b: any) {
         if (a.original.weight && b.original.weight) {
             return this.compareByWeight(a, b);
         }
@@ -71,7 +71,7 @@ export default class MrTreeWidget {
         return this.compareAlphabetically(a, b);
     }
 
-    compareByWeight(a: any, b: any) {
+    protected compareByWeight(a: any, b: any) {
         if (a.original.weight > b.original.weight) {
             return 1;
         } else if (a.original.weight < b.original.weight) {
@@ -80,7 +80,7 @@ export default class MrTreeWidget {
         return 0;
     }
 
-    compareAlphabetically(a: any, b: any) {
+    protected compareAlphabetically(a: any, b: any) {
         const text1 = a.original.text;
         const text2 = b.original.text;
 
@@ -91,13 +91,13 @@ export default class MrTreeWidget {
         return +text1 < +text2 ? -1 : 1;
     }
 
-    static initByEl(el: HTMLElement) {
+    public static initByEl(el: HTMLElement) {
         return this.init({
             el: el
         });
     }
 
-    static boot() {
+    public static boot() {
         const name = this.getDefaults().name;
         this.instances = $(`.${name}`)
             .map((index: number, el: HTMLElement): MrTreeWidget => {
