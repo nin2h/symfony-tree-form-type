@@ -28,6 +28,11 @@ export default class MrTreeWidget {
         this.$el.jstree(this.getJsTreeOptions());
     }
 
+    initJstree() {
+        this.$el.find(`.${this.options.name}__tree`)
+            .jstree(this.getJsTreeOptions());
+    }
+
     getGlobalOptions(options: Options) {
         const id: string = options.id;
         if (id) {
