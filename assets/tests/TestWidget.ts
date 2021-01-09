@@ -1,4 +1,5 @@
 import MrTreeWidget from "@/MrTreeWidget";
+import Options from "@/Options";
 
 export default class TestWidget {
     public $el: JQuery;
@@ -32,5 +33,9 @@ export default class TestWidget {
         return this.getNodes().map((index, el) => {
             return el.textContent;
         }).get();
+    }
+
+    public getOptions(): Options {
+        return this.instance.getOptions();
     }
 }

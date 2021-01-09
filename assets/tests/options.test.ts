@@ -1,4 +1,5 @@
 import MrTreeWidget from "@/MrTreeWidget";
+import TestWidget from "./TestWidget";
 
 test('"id" option from "data" propeprty is included in instance "options" property"', () => {
     $(`<div class="mrTreeWidget" data-mr-tree-widget='{"id": "tree1"}'><div class="mrTreeWidget__tree"></div></div>`)
@@ -18,13 +19,11 @@ test('"id" option from passed options is included in instance "options" property
 });
 
 test('global option "data" is included in instance options', () => {
-    $(`<div class="mrTreeWidget" data-mr-tree-widget='{"id": "tree1"}'><div class="mrTreeWidget__tree"></div></div>`)
-        .appendTo($('body'));
+    const testWidget = TestWidget.init({
+        globalOptions: {
+            data: {id: 1}
+        }
+    });
 
-    (window as any).tree1 = {
-        data: {id: 1}
-    };
-
-    const instance = MrTreeWidget.initByEl($('.mrTreeWidget'));
-    expect(instance.getOptions().data).toEqual({id: 1});
+    expect(testWidget.getOptions().data).toEqual({id: 1});
 });
