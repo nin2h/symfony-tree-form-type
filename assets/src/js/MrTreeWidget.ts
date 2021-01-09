@@ -1,4 +1,5 @@
 import Options from './Options';
+require('jstree');
 
 export default class MrTreeWidget {
     protected options: Options;
@@ -20,12 +21,18 @@ export default class MrTreeWidget {
         return instance;
     }
 
+    public getOptions() {
+        return this.options;
+    }
+
     init(options: Options) {
+        this.$el = $(options.el);
+
         const defaults = MrTreeWidget.getDefaults();
         const globalOptions = this.getGlobalOptions(options);
-        this.options = {...defaults, ...options, ...globalOptions};
-        this.$el = $(options.el);
-        this.$el.jstree(this.getJsTreeOptions());
+        const elementOptions = this.$el.data('mrTreeWidget')
+        this.options = {...defaults, ...options, ...globalOptions, ...elementOptions};
+        this.initJstree();
     }
 
     initJstree() {
