@@ -110,4 +110,8 @@ export default class MrTreeWidget {
             })
             .get();
     }
+
+    public static getInstances() {
+        return this.instances;
+    }
 }
