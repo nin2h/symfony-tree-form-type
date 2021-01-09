@@ -29,8 +29,8 @@ export default class MrTreeWidget {
         this.$el = $(options.el);
 
         const defaults = MrTreeWidget.getDefaults();
-        const globalOptions = this.getGlobalOptions(options);
-        const elementOptions = this.$el.data('mrTreeWidget')
+        const elementOptions = this.$el.data('mrTreeWidget');
+        const globalOptions = this.getGlobalOptions(elementOptions);
         this.options = {...defaults, ...options, ...globalOptions, ...elementOptions};
         this.initJstree();
     }
