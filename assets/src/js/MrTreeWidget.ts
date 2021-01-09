@@ -8,6 +8,8 @@ export default class MrTreeWidget {
 
     protected static instances: Array<MrTreeWidget>;
 
+    protected jstree: JSTree;
+
     protected static getDefaults() {
         return {
             name: 'mrTreeWidget',
@@ -36,8 +38,17 @@ export default class MrTreeWidget {
     }
 
     protected initJstree() {
-        this.$el.find(`.${this.options.name}__tree`)
-            .jstree(this.getJsTreeOptions());
+        const $tree = this.$el.find(`.${this.options.name}__tree`);
+
+        $tree.on('ready.jstree', (e, data) => {
+            this.jstree = data.instance;
+            this.options.callback(this);
+        });
+        $tree.jstree(this.getJsTreeOptions());
+    }
+
+    public getJstree() {
+        return this.jstree;
     }
 
     protected getGlobalOptions(options: Options) {

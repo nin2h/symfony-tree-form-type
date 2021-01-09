@@ -4,5 +4,6 @@ export default interface Options {
     cascadeSelect?: boolean,
     id?: string,
     multiple?: boolean,
-    name?: string
+    name?: string,
+    callback?: Function
 }

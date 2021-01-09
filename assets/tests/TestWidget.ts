@@ -21,7 +21,10 @@ export default class TestWidget {
 
         (window as any)[id] = options.globalOptions;
 
-        this.instance = MrTreeWidget.initByEl(this.$el);
+        this.instance = MrTreeWidget.init({
+            $el: this.$el,
+            callback: options.callback || new Function()
+        });
         return this;
     }
 
