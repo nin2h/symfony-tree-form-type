@@ -1,5 +1,5 @@
 export default interface Options {
-    el: HTMLElement,
+    $el: JQuery,
     data?: Object,
     cascadeSelect?: boolean,
     id?: string,

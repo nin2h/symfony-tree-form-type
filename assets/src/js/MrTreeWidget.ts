@@ -26,7 +26,7 @@ export default class MrTreeWidget {
     }
 
     public init(options: Options) {
-        this.$el = $(options.el);
+        this.$el = options.$el;
 
         const defaults = MrTreeWidget.getDefaults();
         const elementOptions = this.$el.data('mrTreeWidget');
@@ -91,9 +91,13 @@ export default class MrTreeWidget {
         return +text1 < +text2 ? -1 : 1;
     }
 
-    public static initByEl(el: HTMLElement) {
+    public static initByEl(el: HTMLElement | JQuery) {
+        if (el instanceof HTMLElement) {
+            el = $(el);
+        }
+
         return this.init({
-            el: el
+            $el: el
         });
     }
 
