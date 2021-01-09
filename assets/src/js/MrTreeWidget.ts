@@ -71,7 +71,10 @@ export default class MrTreeWidget {
             sort: function (a: string, b: string) {
                 return self.sort(this.get_node(a), this.get_node(b));
             },
-            plugins: ['sort']
+            plugins: ['sort'],
+            checkbox: {
+                three_state: false
+            }
         }
     }
 
