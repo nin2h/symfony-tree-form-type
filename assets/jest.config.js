@@ -9,5 +9,8 @@ module.exports = {
     ],
     setupFiles: [
         "./tests/setup.js"
-    ]
+    ],
+    moduleNameMapper: {
+        '^@/(.*)': '<rootDir>/src/js/$1'
+    }
 };
