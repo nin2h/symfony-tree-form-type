@@ -141,6 +141,26 @@ class MrTreeTypeTest extends KernelTestCase
         $this->assertStringContainsString('name="tree_field"', $html);
     }
 
+    public function testRenderedHtmlContainsCorrectFieldValue()
+    {
+        $entity = $this->createEntity(1);
+        $entity2 = $this->createEntity(2);
+
+        $form = $this->makeForm([
+            'data' => new ArrayCollection([$entity, $entity2]),
+            'tree' => [
+                [
+                    'id' => 1,
+                    'parent' => '#',
+                    'text' => 'Item 1'
+                ]
+            ],
+            'formOptions' => ['multiple' => true]
+        ]);
+        $html = $this->renderForm($form);
+        $this->assertStringContainsString('value="1,2"', $html);
+    }
+
     private function makeRepositoryMock(string $method, $with, $return)
     {
         $repository = $this->createMock(ServiceEntityRepository::class);
