@@ -31,7 +31,8 @@ export default class TestWidget {
 
         this.instance = MrTreeWidget.init({
             $el: this.$el,
-            callback: options.callback || new Function()
+            callback: options.callback || new Function(),
+            ...options.jstreeOptions
         });
         return this;
     }

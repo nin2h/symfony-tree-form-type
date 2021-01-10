@@ -47,6 +47,10 @@ export default class MrTreeWidget {
     protected initJstree() {
         this.$tree.on('changed.jstree', (e, data) => {
             this.onChanged(data);
+
+            if (data.node) {
+                this.runUpCascade(data.node);
+            }
         });
 
         this.$tree.on('ready.jstree', (e, data) => {
@@ -55,6 +59,16 @@ export default class MrTreeWidget {
             this.options.callback(this);
         });
         this.$tree.jstree(this.getJsTreeOptions());
+    }
+
+    protected runUpCascade(node: any) {
+        if (!node.state.selected || !this.options.upCascadeSelect) {
+            return;
+        }
+
+        node.parents.forEach((parent: any) => {
+            this.jstree.select_node(parent);
+        });
     }
 
     protected selectFromFieldValue() {

@@ -5,5 +5,6 @@ export default interface Options {
     id?: string,
     multiple?: boolean,
     name?: string,
-    callback?: Function
+    callback?: Function,
+    upCascadeSelect?: boolean
 }
