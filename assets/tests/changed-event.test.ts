@@ -1,7 +1,7 @@
 import TestWidget from "./TestWidget";
 import MrTreeWidget from "@/MrTreeWidget";
 
-test('input field is updated on jstree node change', (cb) => {
+test('input field is updated on jstree node select', (cb) => {
     const testWidget = TestWidget.init({
         globalOptions: {
             data: [
