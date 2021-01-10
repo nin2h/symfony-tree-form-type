@@ -10,6 +10,8 @@ export default class MrTreeWidget {
 
     protected jstree: JSTree;
 
+    protected $input: JQuery<HTMLElement>;
+
     protected static getDefaults() {
         return {
             name: 'mrTreeWidget',
@@ -34,17 +36,34 @@ export default class MrTreeWidget {
         const elementOptions = this.$el.data('mrTreeWidget');
         const globalOptions = this.getGlobalOptions({...elementOptions, ...options});
         this.options = {...defaults, ...options, ...globalOptions, ...elementOptions};
+
+        this.$input = this.$el.find(`.${this.options.name}__input`);
         this.initJstree();
     }
 
     protected initJstree() {
         const $tree = this.$el.find(`.${this.options.name}__tree`);
 
+        $tree.on('changed.jstree', (e, data) => {
+            this.onChanged(data);
+        });
+
         $tree.on('ready.jstree', (e, data) => {
             this.jstree = data.instance;
             this.options.callback(this);
         });
         $tree.jstree(this.getJsTreeOptions());
+    }
+
+    protected onChanged(data: any) {
+        if (this.jstree) {
+            this.setSelectedToInput();
+        }
+    }
+
+    protected setSelectedToInput() {
+        const selected = this.jstree.get_selected();
+        this.$input.val(selected);
     }
 
     public getJstree() {

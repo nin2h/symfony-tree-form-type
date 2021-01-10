@@ -6,6 +6,8 @@ export default class TestWidget {
 
     public instance: MrTreeWidget;
 
+    public $input: JQuery<HTMLElement>;
+
     public static init(options: any): TestWidget {
         return (new TestWidget()).init(options);
     }
@@ -16,8 +18,12 @@ export default class TestWidget {
             id: id
         });
 
-        this.$el = $(`<div class="mrTreeWidget" data-mr-tree-widget='${dataProps}'><div class="mrTreeWidget__tree"></div></div>`)
+        this.$el = $(`<div class="mrTreeWidget" data-mr-tree-widget='${dataProps}'>
+                <div class="mrTreeWidget__tree"></div>
+                <input class="mrTreeWidget__input" type="hidden" name="tree_field">
+            </div>`)
             .appendTo($('body'));
+        this.$input = this.$el.find('.mrTreeWidget__input');
 
         (window as any)[id] = options.globalOptions;
 
