@@ -18,9 +18,11 @@ export default class TestWidget {
             id: id
         });
 
+        const value = options.value || '';
+
         this.$el = $(`<div class="mrTreeWidget" data-mr-tree-widget='${dataProps}'>
                 <div class="mrTreeWidget__tree"></div>
-                <input class="mrTreeWidget__input" type="hidden" name="tree_field">
+                <input class="mrTreeWidget__input" type="hidden" name="tree_field" value="${value}">
             </div>`)
             .appendTo($('body'));
         this.$input = this.$el.find('.mrTreeWidget__input');

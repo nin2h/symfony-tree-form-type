@@ -12,6 +12,8 @@ export default class MrTreeWidget {
 
     protected $input: JQuery<HTMLElement>;
 
+    protected $tree: JQuery<HTMLElement>;
+
     protected static getDefaults() {
         return {
             name: 'mrTreeWidget',
@@ -38,21 +40,26 @@ export default class MrTreeWidget {
         this.options = {...defaults, ...options, ...globalOptions, ...elementOptions};
 
         this.$input = this.$el.find(`.${this.options.name}__input`);
+        this.$tree = this.$el.find(`.${this.options.name}__tree`);
         this.initJstree();
     }
 
     protected initJstree() {
-        const $tree = this.$el.find(`.${this.options.name}__tree`);
-
-        $tree.on('changed.jstree', (e, data) => {
+        this.$tree.on('changed.jstree', (e, data) => {
             this.onChanged(data);
         });
 
-        $tree.on('ready.jstree', (e, data) => {
+        this.$tree.on('ready.jstree', (e, data) => {
             this.jstree = data.instance;
+            this.selectFromFieldValue();
             this.options.callback(this);
         });
-        $tree.jstree(this.getJsTreeOptions());
+        this.$tree.jstree(this.getJsTreeOptions());
+    }
+
+    protected selectFromFieldValue() {
+        const fieldValue = this.$input.val();
+        this.jstree.select_node(fieldValue)
     }
 
     protected onChanged(data: any) {
@@ -68,6 +75,10 @@ export default class MrTreeWidget {
 
     public getJstree() {
         return this.jstree;
+    }
+
+    public getJstreeEl() {
+        return this.$tree;
     }
 
     protected getGlobalOptions(options: Options) {
@@ -90,7 +101,7 @@ export default class MrTreeWidget {
             sort: function (a: string, b: string) {
                 return self.sort(this.get_node(a), this.get_node(b));
             },
-            plugins: ['sort'],
+            plugins: ['sort', 'checkbox'],
             checkbox: {
                 three_state: false
             }

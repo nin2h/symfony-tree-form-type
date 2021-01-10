@@ -21,3 +21,25 @@ test('input field is updated on jstree node select', (cb) => {
         }
     });
 });
+
+test('input field is updated on jstree node deselect', (cb) => {
+    const testWidget = TestWidget.init({
+        globalOptions: {
+            data: [
+                {
+                    id: 1,
+                    parent: '#',
+                    text: 'Item 1',
+                    weight: 1
+                }
+            ]
+        },
+        value: '1',
+        callback: (instance: MrTreeWidget) => {
+            testWidget.getNodes().first().find('.jstree-anchor').trigger('click');
+            const value = testWidget.$input.val();
+            expect(value).toEqual('');
+            cb();
+        }
+    });
+});
