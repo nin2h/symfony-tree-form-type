@@ -1,7 +1,7 @@
 module.exports = {
     moduleFileExtensions: ['js', 'ts'],
     testMatch: [
-        "**/tests/**/*.ts", "**/?(*.)+(spec|test).[jt]s?(x)"
+        "**/tests/**/*.test.ts", "**/?(*.)+(spec|test).[jt]s?(x)"
     ],
     roots: [
         '<rootDir>/src',
