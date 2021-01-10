@@ -6,5 +6,6 @@ export default interface Options {
     multiple?: boolean,
     name?: string,
     callback?: Function,
-    upCascadeSelect?: boolean
+    upCascadeSelect?: boolean,
+    canBeSelected?: boolean
 }

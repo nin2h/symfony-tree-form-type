@@ -115,9 +115,16 @@ export default class MrTreeWidget {
             sort: function (a: string, b: string) {
                 return self.sort(this.get_node(a), this.get_node(b));
             },
-            plugins: ['sort', 'checkbox'],
+            plugins: ['sort', 'checkbox', 'conditional_select'],
             checkbox: {
                 three_state: false
+            },
+            conditional_select: (node: any): boolean => {
+                if (typeof node.original.canBeSelected !== 'undefined') {
+                    return node.original.canBeSelected;
+                }
+
+                return true;
             }
         }
     }
@@ -167,6 +174,21 @@ export default class MrTreeWidget {
                 return this.initByEl(el);
             })
             .get();
+    }
+
+    public static register() {
+        this.addConditionalSelectPlugin();
+    }
+
+    protected static addConditionalSelectPlugin() {
+        ($.jstree.plugins as any).conditional_select = function (options: any, parent: any) {
+            this.activate_node = function (obj: any, e: any) {
+                const node = this.get_node(obj);
+                if (this.settings.conditional_select.call(this, node)) {
+                    parent.activate_node.call(this, obj, e);
+                }
+            }
+        };
     }
 
     public static getInstances() {
