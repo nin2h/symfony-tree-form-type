@@ -8,6 +8,8 @@ export default class TestWidget {
 
     public $input: JQuery<HTMLElement>;
 
+    public $tree: JQuery<HTMLElement>;
+
     public static init(options: any): TestWidget {
         return (new TestWidget()).init(options);
     }
@@ -26,6 +28,7 @@ export default class TestWidget {
             </div>`)
             .appendTo($('body'));
         this.$input = this.$el.find('.mrTreeWidget__input');
+        this.$tree = this.$el.find('.mrTreeWidget__tree');
 
         (window as any)[id] = options.globalOptions;
 

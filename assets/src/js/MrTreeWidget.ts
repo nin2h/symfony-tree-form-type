@@ -1,4 +1,5 @@
 import Options from './Options';
+import JstreeDataNode from "@/JstreeDataNode";
 require('jstree');
 
 export default class MrTreeWidget {
@@ -58,6 +59,11 @@ export default class MrTreeWidget {
             this.selectFromFieldValue();
             this.options.callback(this);
         });
+
+        this.$tree.on('refresh.jstree', (e, data) => {
+            this.jstree = data.instance;
+        });
+
         this.$tree.jstree(this.getJsTreeOptions());
     }
 
@@ -127,6 +133,34 @@ export default class MrTreeWidget {
                 return true;
             }
         }
+    }
+
+    public showByParent(parent: string) {
+        const newData = this.getDataForParent(parent);
+
+        if (!this.jstree) {
+            this.options.data = newData;
+        } else {
+            this.jstree.settings.core.data = newData;
+            this.jstree.refresh();
+        }
+    }
+
+    protected getDataForParent(parent: string) {
+        let data: Array<JstreeDataNode>;
+
+        if (parent) {
+            data = [];
+            this.options.data.forEach(item => {
+                if (item.parent === parent) {
+                    item.parent = '#';
+                    data.push(item);
+                }
+            });
+        } else {
+            data = this.options.data;
+        }
+        return data;
     }
 
     protected sort(a: any, b: any) {

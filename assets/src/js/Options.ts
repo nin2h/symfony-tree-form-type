@@ -1,6 +1,8 @@
+import JstreeDataNode from "@/JstreeDataNode";
+
 export default interface Options {
     $el: JQuery,
-    data?: Object,
+    data?: Array<JstreeDataNode>,
     cascadeSelect?: boolean,
     id?: string,
     multiple?: boolean,
