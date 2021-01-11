@@ -161,6 +161,37 @@ class MrTreeTypeTest extends KernelTestCase
         $this->assertStringContainsString('value="1,2"', $html);
     }
 
+    public function testItWorksWithMultipleFalseWithData()
+    {
+        $entity = $this->createEntity(1);
+        $repository = $this->makeRepositoryMock(
+            'find',
+            1,
+            $entity
+        );
+        $this->setEntityManagerToTreeType($repository);
+
+        $entity = $this->createEntity(1);
+
+        $form = $this->makeForm([
+            'data' => $entity,
+            'tree' => [
+                [
+                    'id' => 1,
+                    'parent' => '#',
+                    'text' => 'Item 1'
+                ]
+            ],
+            'formOptions' => ['multiple' => false]
+        ]);
+        $html = $this->renderForm($form);
+        $this->assertStringContainsString('value="1"', $html);
+
+        $form->submit(['tree_field' => 1]);
+        $data = $form->getData();
+        $this->assertEquals(1, $data['tree_field']->getId());
+    }
+
     private function makeRepositoryMock(string $method, $with, $return)
     {
         $repository = $this->createMock(ServiceEntityRepository::class);
