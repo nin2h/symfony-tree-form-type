@@ -192,6 +192,25 @@ class MrTreeTypeTest extends KernelTestCase
         $this->assertEquals(1, $data['tree_field']->getId());
     }
 
+    public function testItWorksWithMultipleFalseWithoutData()
+    {
+        $form = $this->makeForm([
+            'data' => null,
+            'tree' => [
+                [
+                    'id' => 1,
+                    'parent' => '#',
+                    'text' => 'Item 1'
+                ]
+            ],
+            'formOptions' => ['multiple' => false]
+        ]);
+
+        $form->submit(['tree_field' => '']);
+        $data = $form->getData();
+        $this->assertNull($data['tree_field']);
+    }
+
     private function makeRepositoryMock(string $method, $with, $return)
     {
         $repository = $this->createMock(ServiceEntityRepository::class);
