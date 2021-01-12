@@ -79,8 +79,8 @@ var MrTreeWidget = /** @class */ (function () {
             .join(',');
     };
     MrTreeWidget.prototype.getSeparatedId = function (item) {
-        if (this.options.idSeparator) {
-            return item.id.split(this.options.idSeparator)[0];
+        if (this.options.idSeparator !== '') {
+            return ('' + item.id).split(this.options.idSeparator)[0];
         }
         return item.id;
     };
