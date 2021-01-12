@@ -2,7 +2,7 @@
     "name": "mrself/symfony-tree-form-type",
     "type": "project",
     "license": "MIT",
-    "description": "Symfony package for form tree type",
+    "description": "Symfony package for tree form type",
     "require": {
         "php": "^7.2.0",
         "symfony/form": "^4",
