@@ -78,8 +78,26 @@ export default class MrTreeWidget {
     }
 
     protected selectFromFieldValue() {
-        const fieldValue = this.$input.val();
-        this.jstree.select_node(fieldValue)
+        const formattedValue = this.getInitialFieldValue();
+        this.jstree.select_node(formattedValue)
+    }
+
+    protected getInitialFieldValue(): string {
+        const fieldValue = this.$input.val() as string;
+        const arrayValue = fieldValue.split(',');
+        return this.options.data.filter(item => {
+            return arrayValue.indexOf(this.getSeparatedId(item)) !== -1;
+        })
+            .map(item => item.id)
+            .join(',');
+    }
+
+    protected getSeparatedId(item: JstreeDataNode): string {
+        if (this.options.idSeparator) {
+            return item.id.split(this.options.idSeparator)[0];
+        }
+
+        return item.id;
     }
 
     protected onChanged(data: any) {

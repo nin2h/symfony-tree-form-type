@@ -9,5 +9,6 @@ export default interface Options {
     name?: string,
     callback?: Function,
     upCascadeSelect?: boolean,
-    canBeSelected?: boolean
+    canBeSelected?: boolean;
+    idSeparator?: string;
 }

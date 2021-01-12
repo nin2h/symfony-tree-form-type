@@ -46,3 +46,27 @@ test('it does not call callback option if it does not exist', (cb) => {
 
     setTimeout(cb, 1000);
 });
+
+test('it trims the right part of id using a separator', (cb) => {
+    TestWidget.init({
+        globalOptions: {
+            data: [
+                {
+                    id: '1_any',
+                    parent: '#',
+                    text: 'Item 1',
+                    weight: 1
+                }
+            ]
+        },
+        jstreeOptions: {
+            idSeparator: '_'
+        },
+        value: '1',
+        callback: (instance: MrTreeWidget) => {
+            const selected = instance.getJstree().get_selected();
+            expect(selected).toEqual(['1_any']);
+            cb();
+        }
+    });
+});
