@@ -80,7 +80,7 @@ class MrTreeType extends AbstractType
     {
         $withoutPrefix = str_replace($options['id_prefix'], '', $viewId);
 
-        if ($options['id_separator'] === false) {
+        if ($options['id_separator'] === '') {
             return $withoutPrefix;
         }
 
@@ -116,6 +116,7 @@ class MrTreeType extends AbstractType
         $view->vars['tree'] = $tree;
         $view->vars['up_cascade_select'] = $options['up_cascade_select'];
         $view->vars['multiple'] = $options['multiple'];
+        $view->vars['id_separator'] = $options['id_separator'];
     }
 
     public function configureOptions(OptionsResolver $resolver)
@@ -125,7 +126,7 @@ class MrTreeType extends AbstractType
             'id_prefix' => '',
 
             // Separator used to leave only the first part of id before the separator
-            'id_separator' => false,
+            'id_separator' => '',
 
             'up_cascade_select' => false,
             'class' =>  null,

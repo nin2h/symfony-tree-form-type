@@ -93,7 +93,7 @@ export default class MrTreeWidget {
     }
 
     protected getSeparatedId(item: JstreeDataNode): string {
-        if (this.options.idSeparator) {
+        if (this.options.idSeparator !== '') {
             return item.id.split(this.options.idSeparator)[0];
         }
 
