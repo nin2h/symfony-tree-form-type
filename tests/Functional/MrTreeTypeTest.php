@@ -135,7 +135,7 @@ class MrTreeTypeTest extends KernelTestCase
             'formOptions' => ['multiple' => true]
         ]);
         $html = $this->renderForm($form);
-        $this->assertStringContainsString('name="tree_field"', $html);
+        $this->assertStringContainsString('name="form[tree_field]"', $html);
     }
 
     public function testRenderedHtmlContainsCorrectFieldValue()
