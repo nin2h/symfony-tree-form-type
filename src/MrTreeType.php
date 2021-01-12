@@ -87,6 +87,7 @@ class MrTreeType extends AbstractType
             return $item;
         }, $tree);
         $view->vars['tree'] = $tree;
+        $view->vars['up_cascade_select'] = $options['up_cascade_select'];
     }
 
     public function configureOptions(OptionsResolver $resolver)
@@ -94,7 +95,7 @@ class MrTreeType extends AbstractType
         $resolver->setDefaults([
             'multiple' => false,
             'id_prefix' => '',
-            'cascade_select' => false,
+            'up_cascade_select' => false,
             'class' =>  null,
             'compound' => false,
             'data_class' => null
