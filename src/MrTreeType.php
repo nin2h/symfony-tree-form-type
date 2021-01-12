@@ -3,6 +3,7 @@
 namespace Mrself\TreeTypeBundle;
 
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\CallbackTransformer;
@@ -28,11 +29,16 @@ class MrTreeType extends AbstractType
     {
         $builder->addViewTransformer(new CallbackTransformer(
             function ($normValue) use ($options) {
+                if ($normValue instanceof Collection) {
+                    return $normValue->map(function ($itemValue) {
+                        return $itemValue->getId();
+                    })->toArray();
+                }
+
                 if ($options['multiple']) {
                     if (!$normValue) {
                         return [];
                     }
-
                     return $normValue->map(function ($itemValue) {
                         return $itemValue->getId();
                     })->toArray();
