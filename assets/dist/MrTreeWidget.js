@@ -65,8 +65,24 @@ var MrTreeWidget = /** @class */ (function () {
         });
     };
     MrTreeWidget.prototype.selectFromFieldValue = function () {
+        var formattedValue = this.getInitialFieldValue();
+        this.jstree.select_node(formattedValue);
+    };
+    MrTreeWidget.prototype.getInitialFieldValue = function () {
+        var _this = this;
         var fieldValue = this.$input.val();
-        this.jstree.select_node(fieldValue);
+        var arrayValue = fieldValue.split(',');
+        return this.options.data.filter(function (item) {
+            return arrayValue.indexOf(_this.getSeparatedId(item)) !== -1;
+        })
+            .map(function (item) { return item.id; })
+            .join(',');
+    };
+    MrTreeWidget.prototype.getSeparatedId = function (item) {
+        if (this.options.idSeparator) {
+            return item.id.split(this.options.idSeparator)[0];
+        }
+        return item.id;
     };
     MrTreeWidget.prototype.onChanged = function (data) {
         if (this.jstree) {

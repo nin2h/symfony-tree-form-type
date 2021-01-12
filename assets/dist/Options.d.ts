@@ -11,4 +11,5 @@ export default interface Options {
     callback?: Function;
     upCascadeSelect?: boolean;
     canBeSelected?: boolean;
+    idSeparator?: string;
 }
