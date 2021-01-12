@@ -10,7 +10,7 @@
         window['{{ field_id }}'] = {
             data: {{ tree | json_encode | raw }},
             multiple: {{ multiple }},
-            upCascadeSelect: {{ up_cascade_select }}
+            upCascadeSelect: !!{{ up_cascade_select ? 1 : 0 }}
         };
     </script>
 {% endblock %}
