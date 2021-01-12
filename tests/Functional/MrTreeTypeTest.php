@@ -81,7 +81,7 @@ class MrTreeTypeTest extends KernelTestCase
             'data' => new ArrayCollection()
         ]);
 
-        $form->submit(['tree_field' => [1]]);
+        $form->submit(['tree_field' => '1']);
         $form->isValid();
         $data = $form->getData();
         $this->assertEquals(1, $data['tree_field'][0]->getId());
@@ -115,7 +115,7 @@ class MrTreeTypeTest extends KernelTestCase
         $html = $this->renderForm($form);
         $this->assertStringContainsString('"selected"', $html);
 
-        $form->submit(['tree_field' => [1, 2]]);
+        $form->submit(['tree_field' => '1,2']);
         $form->isValid();
         $data = $form->getData();
         $this->assertEquals(1, $data['tree_field'][0]->getId());
@@ -184,7 +184,7 @@ class MrTreeTypeTest extends KernelTestCase
         $html = $this->renderForm($form);
         $this->assertStringContainsString('value="1"', $html);
 
-        $form->submit(['tree_field' => 1]);
+        $form->submit(['tree_field' => '1']);
         $data = $form->getData();
         $this->assertEquals(1, $data['tree_field']->getId());
     }
