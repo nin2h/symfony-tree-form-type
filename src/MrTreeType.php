@@ -58,27 +58,33 @@ class MrTreeType extends AbstractType
                 $repository = $this->em->getRepository($options['class']);
 
                 if ($options['multiple']) {
-                    $ids = $this->multipleViewValueToIds($viewValue, $options['id_prefix']);
+                    $ids = $this->multipleViewValueToIds($viewValue, $options);
                     return new ArrayCollection($repository->findBy(['id' => $ids]));
                 }
 
-                $viewValue = $this->formatNodeViewId($viewValue, $options['id_prefix']);
+                $viewValue = $this->formatNodeViewId($viewValue, $options);
                 return $repository->find($viewValue);
             }
         ));
     }
 
-    protected function multipleViewValueToIds(string $viewValue, string $idPrefix): array
+    protected function multipleViewValueToIds(string $viewValue, array $options): array
     {
         $viewValue = explode(',', $viewValue);
-        return array_map(function (string $idWithPrefix) use ($idPrefix): string {
-            return $this->formatNodeViewId($idWithPrefix, $idPrefix);
+        return array_map(function (string $idWithPrefix) use ($options): string {
+            return $this->formatNodeViewId($idWithPrefix, $options);
         }, $viewValue);
     }
 
-    protected function formatNodeViewId(string $viewId, string $idPrefix)
+    protected function formatNodeViewId(string $viewId, array $options): string
     {
-        return str_replace($idPrefix, '', $viewId);
+        $withoutPrefix = str_replace($options['id_prefix'], '', $viewId);
+
+        if ($options['id_separator'] === false) {
+            return $withoutPrefix;
+        }
+
+        return explode($options['id_separator'], $withoutPrefix)[0];
     }
 
     public function setEntityManager($em)
@@ -117,6 +123,10 @@ class MrTreeType extends AbstractType
         $resolver->setDefaults([
             'multiple' => false,
             'id_prefix' => '',
+
+            // Separator used to leave only the first part of id before the separator
+            'id_separator' => false,
+
             'up_cascade_select' => false,
             'class' =>  null,
             'compound' => false,
@@ -125,6 +135,7 @@ class MrTreeType extends AbstractType
 
         $resolver->setRequired(['tree']);
         $resolver->setAllowedTypes('tree', 'array');
+        $resolver->setAllowedTypes('id_separator', ['string', 'bool']);
 
         $resolver->setNormalizer('tree', function (Options $options, array $tree): array {
             return array_map(function ($item) {

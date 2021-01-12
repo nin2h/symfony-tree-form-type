@@ -71,6 +71,63 @@ class NodeIdCompositionTest extends KernelTestCase
         $form->submit(['tree_field' => 'prefix1,prefix2']);
     }
 
+    public function testOnlyFirstPartOfIdBeforeASeparatorIsLeftIfSeparatorIsProvidedWithMultipleTrue()
+    {
+        $entity = $this->createEntity(1);
+        $entity2 = $this->createEntity(2);
+        $repository = $this->makeRepositoryMock(
+            'findBy',
+            ['id' => [1,2]],
+            [$entity, $entity2]
+        );
+        $this->setEntityManagerToTreeType($repository);
+
+        $form = $this->makeForm([
+            'data' => new ArrayCollection(),
+            'tree' => [
+                [
+                    'id' => 1,
+                    'parent' => '#',
+                    'text' => 'Item 1'
+                ]
+            ],
+            'formOptions' => [
+                'multiple' => true,
+                'id_separator' => '_',
+            ]
+        ]);
+
+        $form->submit(['tree_field' => '1_any,2_any']);
+    }
+
+    public function testOnlyFirstPartOfIdBeforeASeparatorIsLeftIfSeparatorIsProvidedWithMultipleFalse()
+    {
+        $entity = $this->createEntity(1);
+        $repository = $this->makeRepositoryMock(
+            'find',
+            1,
+            $entity
+        );
+        $this->setEntityManagerToTreeType($repository);
+
+        $form = $this->makeForm([
+            'data' => new ArrayCollection(),
+            'tree' => [
+                [
+                    'id' => 1,
+                    'parent' => '#',
+                    'text' => 'Item 1'
+                ]
+            ],
+            'formOptions' => [
+                'multiple' => false,
+                'id_separator' => '_',
+            ]
+        ]);
+
+        $form->submit(['tree_field' => '1_any']);
+    }
+
     protected function setUp()
     {
         static::bootKernel();
