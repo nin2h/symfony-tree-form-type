@@ -1,6 +1,6 @@
 {
     "name": "mrself/symfony-tree-form-type",
-    "version": "1.0.5",
+    "version": "1.0.6",
     "type": "project",
     "license": "MIT",
     "description": "Symfony package for tree form type",
