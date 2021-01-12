@@ -55,17 +55,30 @@ class MrTreeType extends AbstractType
                     return null;
                 }
 
-                $viewValue = explode(',', $viewValue);
-
                 $repository = $this->em->getRepository($options['class']);
 
                 if ($options['multiple']) {
-                    return new ArrayCollection($repository->findBy(['id' => $viewValue]));
+                    $ids = $this->multipleViewValueToIds($viewValue, $options['id_prefix']);
+                    return new ArrayCollection($repository->findBy(['id' => $ids]));
                 }
 
+                $viewValue = $this->formatNodeViewId($viewValue, $options['id_prefix']);
                 return $repository->find($viewValue);
             }
         ));
+    }
+
+    protected function multipleViewValueToIds(string $viewValue, string $idPrefix): array
+    {
+        $viewValue = explode(',', $viewValue);
+        return array_map(function (string $idWithPrefix) use ($idPrefix): string {
+            return $this->formatNodeViewId($idWithPrefix, $idPrefix);
+        }, $viewValue);
+    }
+
+    protected function formatNodeViewId(string $viewId, string $idPrefix)
+    {
+        return str_replace($idPrefix, '', $viewId);
     }
 
     public function setEntityManager($em)
