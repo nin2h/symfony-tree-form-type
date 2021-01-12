@@ -55,6 +55,8 @@ class MrTreeType extends AbstractType
                     return null;
                 }
 
+                $viewValue = explode(',', $viewValue);
+
                 $repository = $this->em->getRepository($options['class']);
 
                 if ($options['multiple']) {

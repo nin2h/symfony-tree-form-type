@@ -237,6 +237,35 @@ class MrTreeTypeTest extends KernelTestCase
         $this->assertEquals(1, $data['tree_field']->getId());
     }
 
+    public function testViewValueIsSplitByCommaBeforeForQueryParams()
+    {
+        $entity = $this->createEntity(1);
+        $entity2 = $this->createEntity(2);
+
+        $repository = $this->makeRepositoryMock(
+            'findBy',
+            ['id' => [1,2]],
+            [$entity, $entity2]
+        );
+        $this->setEntityManagerToTreeType($repository);
+
+        $form = $this->makeForm([
+            'data' => new ArrayCollection([$entity]),
+            'tree' => [
+                [
+                    'id' => 1,
+                    'parent' => '#',
+                    'text' => 'Item 1'
+                ]
+            ],
+            'formOptions' => ['multiple' => true]
+        ]);
+
+        $form->submit(['tree_field' => '1,2']);
+        $data = $form->getData();
+        $this->assertEquals(1, $data['tree_field'][0]->getId());
+    }
+
     protected function setUp()
     {
         static::bootKernel();
