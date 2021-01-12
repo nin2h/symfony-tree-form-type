@@ -48,7 +48,7 @@ var MrTreeWidget = /** @class */ (function () {
         this.$tree.on('ready.jstree', function (e, data) {
             _this.jstree = data.instance;
             _this.selectFromFieldValue();
-            _this.options.callback(_this);
+            _this.options.callback && _this.options.callback(_this);
         });
         this.$tree.on('refresh.jstree', function (e, data) {
             _this.jstree = data.instance;
