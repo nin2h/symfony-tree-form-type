@@ -88,6 +88,7 @@ class MrTreeType extends AbstractType
         }, $tree);
         $view->vars['tree'] = $tree;
         $view->vars['up_cascade_select'] = $options['up_cascade_select'];
+        $view->vars['multiple'] = $options['multiple'];
     }
 
     public function configureOptions(OptionsResolver $resolver)
