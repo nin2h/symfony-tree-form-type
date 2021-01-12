@@ -57,7 +57,7 @@ export default class MrTreeWidget {
         this.$tree.on('ready.jstree', (e, data) => {
             this.jstree = data.instance;
             this.selectFromFieldValue();
-            this.options.callback(this);
+            this.options.callback && this.options.callback(this);
         });
 
         this.$tree.on('refresh.jstree', (e, data) => {

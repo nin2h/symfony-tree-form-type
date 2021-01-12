@@ -29,3 +29,20 @@ test('it sets "jstree" instance', (cb) => {
         }
     });
 });
+
+test('it does not call callback option if it does not exist', (cb) => {
+    TestWidget.init({
+        globalOptions: {
+            data: [
+                {
+                    id: 1,
+                    parent: '#',
+                    text: 'Item 1',
+                    weight: 1
+                }
+            ]
+        }
+    });
+
+    setTimeout(cb, 1000);
+});

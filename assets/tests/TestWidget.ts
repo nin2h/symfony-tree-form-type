@@ -32,11 +32,14 @@ export default class TestWidget {
 
         (window as any)[id] = options.globalOptions;
 
-        this.instance = MrTreeWidget.init({
+        let finalOptions = {
             $el: this.$el,
-            callback: options.callback || new Function(),
             ...options.jstreeOptions
-        });
+        };
+        if (options.callback) {
+            finalOptions.callback = options.callback;
+        }
+        this.instance = MrTreeWidget.init(finalOptions);
         return this;
     }
 
