@@ -86,18 +86,23 @@ export default class MrTreeWidget {
         const fieldValue = this.$input.val() as string;
         const arrayValue = fieldValue.split(',');
         return this.options.data.filter(item => {
-            return arrayValue.indexOf(this.getSeparatedId(item)) !== -1;
+            return arrayValue.indexOf(this.getTrimmedId(item)) !== -1;
         })
             .map(item => item.id)
             .join(',');
     }
 
-    protected getSeparatedId(item: JstreeDataNode): string {
+    protected getTrimmedId(item: JstreeDataNode): string {
+        const withoutPrefix = (''+ item.id).replace(this.options.idPrefix, '');
+        return this.getSeparatedId(withoutPrefix);
+    }
+
+    protected getSeparatedId(id: string): string {
         if (this.options.idSeparator !== '') {
-            return ('' + item.id).split(this.options.idSeparator)[0];
+            return ('' + id).split(this.options.idSeparator)[0];
         }
 
-        return item.id;
+        return id;
     }
 
     protected onChanged(data: any) {

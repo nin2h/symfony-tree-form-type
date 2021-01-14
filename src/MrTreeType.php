@@ -117,6 +117,7 @@ class MrTreeType extends AbstractType
         $view->vars['up_cascade_select'] = $options['up_cascade_select'];
         $view->vars['multiple'] = $options['multiple'];
         $view->vars['id_separator'] = $options['id_separator'];
+        $view->vars['id_prefix'] = $options['id_prefix'];
     }
 
     public function configureOptions(OptionsResolver $resolver)

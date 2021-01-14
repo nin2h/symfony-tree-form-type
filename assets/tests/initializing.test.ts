@@ -70,3 +70,27 @@ test('it trims the right part of id using a separator', (cb) => {
         }
     });
 });
+
+test('it trims the left part (id_prefix)', (cb) => {
+    TestWidget.init({
+        globalOptions: {
+            data: [
+                {
+                    id: 'prefix1',
+                    parent: '#',
+                    text: 'Item 1',
+                    weight: 1
+                }
+            ]
+        },
+        jstreeOptions: {
+            idPrefix: 'prefix'
+        },
+        value: '1',
+        callback: (instance: MrTreeWidget) => {
+            const selected = instance.getJstree().get_selected();
+            expect(selected).toEqual(['prefix1']);
+            cb();
+        }
+    });
+});

@@ -11,4 +11,5 @@ export default interface Options {
     upCascadeSelect?: boolean,
     canBeSelected?: boolean;
     idSeparator?: string;
+    idPrefix?: string;
 }
