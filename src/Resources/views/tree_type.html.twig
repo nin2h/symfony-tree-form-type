@@ -10,7 +10,7 @@
             data: {{ tree | json_encode | raw }},
             multiple: !!{{ multiple ? 1 : 0 }},
             upCascadeSelect: !!{{ up_cascade_select ? 1 : 0 }},
-            idSeparator: {{ id_separator }},
+            idSeparator: '{{ id_separator }}',
         };
     </script>
 {% endblock %}
