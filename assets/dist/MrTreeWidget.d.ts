@@ -20,7 +20,8 @@ export default class MrTreeWidget {
     protected runUpCascade(node: any): void;
     protected selectFromFieldValue(): void;
     protected getInitialFieldValue(): string;
-    protected getSeparatedId(item: JstreeDataNode): string;
+    protected getTrimmedId(item: JstreeDataNode): string;
+    protected getSeparatedId(id: string): string;
     protected onChanged(data: any): void;
     protected setSelectedToInput(): void;
     getJstree(): JSTree;

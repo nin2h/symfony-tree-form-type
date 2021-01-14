@@ -73,16 +73,20 @@ var MrTreeWidget = /** @class */ (function () {
         var fieldValue = this.$input.val();
         var arrayValue = fieldValue.split(',');
         return this.options.data.filter(function (item) {
-            return arrayValue.indexOf(_this.getSeparatedId(item)) !== -1;
+            return arrayValue.indexOf(_this.getTrimmedId(item)) !== -1;
         })
             .map(function (item) { return item.id; })
             .join(',');
     };
-    MrTreeWidget.prototype.getSeparatedId = function (item) {
+    MrTreeWidget.prototype.getTrimmedId = function (item) {
+        var withoutPrefix = ('' + item.id).replace(this.options.idPrefix, '');
+        return this.getSeparatedId(withoutPrefix);
+    };
+    MrTreeWidget.prototype.getSeparatedId = function (id) {
         if (this.options.idSeparator !== '') {
-            return ('' + item.id).split(this.options.idSeparator)[0];
+            return ('' + id).split(this.options.idSeparator)[0];
         }
-        return item.id;
+        return id;
     };
     MrTreeWidget.prototype.onChanged = function (data) {
         if (this.jstree) {
