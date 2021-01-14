@@ -75,8 +75,7 @@ var MrTreeWidget = /** @class */ (function () {
         return this.options.data.filter(function (item) {
             return arrayValue.indexOf(_this.getTrimmedId(item)) !== -1;
         })
-            .map(function (item) { return item.id; })
-            .join(',');
+            .map(function (item) { return item.id; });
     };
     MrTreeWidget.prototype.getTrimmedId = function (item) {
         var withoutPrefix = ('' + item.id).replace(this.options.idPrefix, '');

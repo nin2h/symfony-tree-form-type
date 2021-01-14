@@ -82,14 +82,13 @@ export default class MrTreeWidget {
         this.jstree.select_node(formattedValue)
     }
 
-    protected getInitialFieldValue(): string {
+    protected getInitialFieldValue(): Array<string> {
         const fieldValue = this.$input.val() as string;
         const arrayValue = fieldValue.split(',');
         return this.options.data.filter(item => {
             return arrayValue.indexOf(this.getTrimmedId(item)) !== -1;
         })
-            .map(item => item.id)
-            .join(',');
+            .map(item => item.id);
     }
 
     protected getTrimmedId(item: JstreeDataNode): string {
