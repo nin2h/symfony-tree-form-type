@@ -16,4 +16,5 @@ export default interface Options {
     associations?: {
         [p: string]: Array<string>;
     };
+    nodeAssociationTriggerHtml?: string;
 }

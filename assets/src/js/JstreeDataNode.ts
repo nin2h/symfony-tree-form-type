@@ -3,4 +3,5 @@ export default interface JstreeDataNode {
     parent: string;
     associations?: Array<string>;
     original?: JstreeDataNode;
+    children?: Array<string>;
 }

@@ -13,4 +13,5 @@ export default interface Options {
     idSeparator?: string;
     idPrefix?: string;
     associations?: {[p: string]: Array<string>};
+    nodeAssociationTriggerHtml?: string;
 }

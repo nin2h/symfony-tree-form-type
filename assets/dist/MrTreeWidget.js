@@ -17,7 +17,8 @@ var MrTreeWidget = /** @class */ (function () {
         return {
             name: 'mrTreeWidget',
             data: {},
-            associations: {}
+            associations: {},
+            nodeAssociationTriggerHtml: '<span data-association-trigger>Select associations</span>'
         };
     };
     MrTreeWidget.init = function (options) {
@@ -44,12 +45,15 @@ var MrTreeWidget = /** @class */ (function () {
             _this.onChanged(data);
             if (data.node) {
                 _this.runUpCascade(data.node);
-                _this.initNodeAssociation(data.node);
             }
+        });
+        this.$tree.on('open_node.jstree', function (e, data) {
+            _this.initNodeAssociation(data.node);
         });
         this.$tree.on('ready.jstree', function (e, data) {
             _this.jstree = data.instance;
             _this.selectFromFieldValue();
+            _this.initRootNodesAssociation();
             _this.options.callback && _this.options.callback(_this);
         });
         this.$tree.on('refresh.jstree', function (e, data) {
@@ -57,10 +61,31 @@ var MrTreeWidget = /** @class */ (function () {
         });
         this.$tree.jstree(this.getJsTreeOptions());
     };
-    MrTreeWidget.prototype.initNodeAssociation = function (item) {
-        this.jstree.select_node(this.getNodeAssociations(item));
+    MrTreeWidget.prototype.initRootNodesAssociation = function () {
+        this.initNodeAssociation(this.jstree.get_node('#'));
     };
-    MrTreeWidget.prototype.getNodeAssociations = function (item) {
+    MrTreeWidget.prototype.initNodeAssociation = function (item) {
+        var _this = this;
+        item.children.forEach(function (child) {
+            var associations = _this.getNodeAssociations(child);
+            if (!associations.length) {
+                return;
+            }
+            _this.insertTriggerHtml(child, associations);
+        });
+    };
+    MrTreeWidget.prototype.insertTriggerHtml = function (nodeId, associations) {
+        var _this = this;
+        var $nodeLink = this.jstree.get_node(nodeId, true).find('> .jstree-anchor');
+        $(this.options.nodeAssociationTriggerHtml)
+            .appendTo($nodeLink)
+            .on('click', function (e, event) {
+            e.preventDefault();
+            _this.jstree.select_node(associations);
+        });
+    };
+    MrTreeWidget.prototype.getNodeAssociations = function (nodeId) {
+        var item = this.jstree.get_node(nodeId);
         if (item.original.associations) {
             return item.original.associations;
         }

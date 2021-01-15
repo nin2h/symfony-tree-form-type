@@ -9,7 +9,7 @@ test('one association is auto selected on the condition attribute select', (cb) 
                 {
                     id: '1',
                     parent: '#',
-                    text: 'Item 1 <span data-association-trigger>Select associations</span>',
+                    text: 'Item 1',
                     associations: ['2']
                 },
                 {
@@ -22,7 +22,7 @@ test('one association is auto selected on the condition attribute select', (cb) 
         callback: (instance: MrTreeWidget) => {
             testWidget.$tree.find('[data-association-trigger]').trigger('click');
             const selectedNodes = instance.getJstree().get_selected();
-            expect(selectedNodes).toEqual(['1', '2']);
+            expect(selectedNodes).toEqual(['2', '1']);
             cb();
         }
     });
@@ -40,7 +40,7 @@ test('one association is auto selected on the child (hidden) condition attribute
                 {
                     id: '2',
                     parent: '1',
-                    text: 'Item 1 <span data-association-trigger>Select associations</span>',
+                    text: 'Item 2',
                     associations: ['3']
                 },
                 {
@@ -51,14 +51,11 @@ test('one association is auto selected on the child (hidden) condition attribute
             ]
         },
         callback: (instance: MrTreeWidget) => {
-            testWidget.$tree.on('changed.jstree', () => {
-                const selectedNodes = instance.getJstree().get_selected();
-                expect(selectedNodes).toEqual(['2', '3']);
-                cb();
-            });
-
             instance.getJstree().open_node('1');
             testWidget.$tree.find('[data-association-trigger]').trigger('click');
+            const selectedNodes = instance.getJstree().get_selected();
+            expect(selectedNodes).toEqual(['3', '2']);
+            cb();
         }
     });
 });
@@ -70,7 +67,7 @@ test('one association options is taken from app options if it does not exist for
                 {
                     id: '1',
                     parent: '#',
-                    text: 'Item 1 <span data-association-trigger>Select associations</span>',
+                    text: 'Item 1',
                 },
                 {
                     id: '2',
@@ -83,7 +80,7 @@ test('one association options is taken from app options if it does not exist for
         callback: (instance: MrTreeWidget) => {
             testWidget.$tree.find('[data-association-trigger]').trigger('click');
             const selectedNodes = instance.getJstree().get_selected();
-            expect(selectedNodes).toEqual(['1', '2']);
+            expect(selectedNodes).toEqual(['2', '1']);
             cb();
         }
     });

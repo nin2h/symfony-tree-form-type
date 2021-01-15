@@ -13,13 +13,16 @@ export default class MrTreeWidget {
         name: string;
         data: {};
         associations: {};
+        nodeAssociationTriggerHtml: string;
     };
     static init(options: Options): MrTreeWidget;
     getOptions(): Options;
     init(options: Options): void;
     protected initJstree(): void;
+    protected initRootNodesAssociation(): void;
     protected initNodeAssociation(item: JstreeDataNode): void;
-    protected getNodeAssociations(item: JstreeDataNode): Array<string>;
+    protected insertTriggerHtml(nodeId: string, associations: Array<string>): void;
+    protected getNodeAssociations(nodeId: string): Array<string>;
     protected runUpCascade(node: any): void;
     protected selectFromFieldValue(): void;
     protected getInitialFieldValue(): Array<string>;

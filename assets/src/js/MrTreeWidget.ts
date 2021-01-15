@@ -19,7 +19,8 @@ export default class MrTreeWidget {
         return {
             name: 'mrTreeWidget',
             data: {},
-            associations: {}
+            associations: {},
+            nodeAssociationTriggerHtml: '<span data-association-trigger>Select associations</span>'
         };
     }
 
@@ -52,13 +53,17 @@ export default class MrTreeWidget {
 
             if (data.node) {
                 this.runUpCascade(data.node);
-                this.initNodeAssociation(data.node);
             }
+        });
+
+        this.$tree.on('open_node.jstree', (e, data) => {
+            this.initNodeAssociation(data.node);
         });
 
         this.$tree.on('ready.jstree', (e, data) => {
             this.jstree = data.instance;
             this.selectFromFieldValue();
+            this.initRootNodesAssociation();
             this.options.callback && this.options.callback(this);
         });
 
@@ -69,11 +74,33 @@ export default class MrTreeWidget {
         this.$tree.jstree(this.getJsTreeOptions());
     }
 
-    protected initNodeAssociation(item: JstreeDataNode) {
-        this.jstree.select_node(this.getNodeAssociations(item));
+    protected initRootNodesAssociation() {
+        this.initNodeAssociation(this.jstree.get_node('#'));
     }
 
-    protected getNodeAssociations(item: JstreeDataNode): Array<string> {
+    protected initNodeAssociation(item: JstreeDataNode) {
+        item.children.forEach(child => {
+            const associations = this.getNodeAssociations(child);
+            if (!associations.length) {
+                return;
+            }
+
+            this.insertTriggerHtml(child, associations);
+        });
+    }
+
+    protected insertTriggerHtml(nodeId: string, associations: Array<string>) {
+        const $nodeLink = this.jstree.get_node(nodeId, true).find('> .jstree-anchor');
+        $(this.options.nodeAssociationTriggerHtml)
+            .appendTo($nodeLink)
+            .on('click', (e, event) => {
+                e.preventDefault();
+                this.jstree.select_node(associations);
+            });
+    }
+
+    protected getNodeAssociations(nodeId: string): Array<string> {
+        const item = this.jstree.get_node(nodeId);
         if (item.original.associations) {
             return item.original.associations;
         }
