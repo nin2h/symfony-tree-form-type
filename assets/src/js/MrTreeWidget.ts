@@ -18,7 +18,8 @@ export default class MrTreeWidget {
     protected static getDefaults() {
         return {
             name: 'mrTreeWidget',
-            data: {}
+            data: {},
+            associations: {}
         };
     }
 
@@ -69,7 +70,15 @@ export default class MrTreeWidget {
     }
 
     protected initNodeAssociation(item: JstreeDataNode) {
-        this.jstree.select_node(item.original.associations);
+        this.jstree.select_node(this.getNodeAssociations(item));
+    }
+
+    protected getNodeAssociations(item: JstreeDataNode): Array<string> {
+        if (item.original.associations) {
+            return item.original.associations;
+        }
+
+        return this.options.associations[item.id] || [];
     }
 
     protected runUpCascade(node: any) {

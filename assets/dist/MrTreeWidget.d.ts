@@ -12,12 +12,14 @@ export default class MrTreeWidget {
     protected static getDefaults(): {
         name: string;
         data: {};
+        associations: {};
     };
     static init(options: Options): MrTreeWidget;
     getOptions(): Options;
     init(options: Options): void;
     protected initJstree(): void;
     protected initNodeAssociation(item: JstreeDataNode): void;
+    protected getNodeAssociations(item: JstreeDataNode): Array<string>;
     protected runUpCascade(node: any): void;
     protected selectFromFieldValue(): void;
     protected getInitialFieldValue(): Array<string>;

@@ -62,3 +62,29 @@ test('one association is auto selected on the child (hidden) condition attribute
         }
     });
 });
+
+test('one association options is taken from app options if it does not exist for a node', (cb) => {
+    const testWidget = TestWidget.init({
+        globalOptions: {
+            data: [
+                {
+                    id: '1',
+                    parent: '#',
+                    text: 'Item 1 <span data-association-trigger>Select associations</span>',
+                },
+                {
+                    id: '2',
+                    parent: '#',
+                    text: 'Item 2'
+                },
+            ],
+            associations: {'1': ['2']}
+        },
+        callback: (instance: MrTreeWidget) => {
+            testWidget.$tree.find('[data-association-trigger]').trigger('click');
+            const selectedNodes = instance.getJstree().get_selected();
+            expect(selectedNodes).toEqual(['1', '2']);
+            cb();
+        }
+    });
+});

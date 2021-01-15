@@ -16,7 +16,8 @@ var MrTreeWidget = /** @class */ (function () {
     MrTreeWidget.getDefaults = function () {
         return {
             name: 'mrTreeWidget',
-            data: {}
+            data: {},
+            associations: {}
         };
     };
     MrTreeWidget.init = function (options) {
@@ -57,7 +58,13 @@ var MrTreeWidget = /** @class */ (function () {
         this.$tree.jstree(this.getJsTreeOptions());
     };
     MrTreeWidget.prototype.initNodeAssociation = function (item) {
-        this.jstree.select_node(item.original.associations);
+        this.jstree.select_node(this.getNodeAssociations(item));
+    };
+    MrTreeWidget.prototype.getNodeAssociations = function (item) {
+        if (item.original.associations) {
+            return item.original.associations;
+        }
+        return this.options.associations[item.id] || [];
     };
     MrTreeWidget.prototype.runUpCascade = function (node) {
         var _this = this;

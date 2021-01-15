@@ -12,4 +12,5 @@ export default interface Options {
     canBeSelected?: boolean;
     idSeparator?: string;
     idPrefix?: string;
+    associations?: {[p: string]: Array<string>};
 }
