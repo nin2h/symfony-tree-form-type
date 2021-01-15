@@ -23,7 +23,7 @@ class AlternativesTest extends KernelTestCase
         ]);
 
         $html = $this->renderForm($form);
-        $this->assertStringContainsString('alternatives: []', $html);
+        $this->assertStringContainsString('associations: []', $html);
     }
 
     public function testEmptyAlternativesOptionIsPassedToTemplate()
@@ -37,11 +37,11 @@ class AlternativesTest extends KernelTestCase
                     'text' => 'Item 1'
                 ]
             ],
-            'formOptions' => ['alternatives' => []]
+            'formOptions' => ['associations' => []]
         ]);
 
         $html = $this->renderForm($form);
-        $this->assertStringContainsString('alternatives: []', $html);
+        $this->assertStringContainsString('associations: []', $html);
     }
 
     public function testAlternativesOptionIsPassedToTemplate()
@@ -55,13 +55,13 @@ class AlternativesTest extends KernelTestCase
                     'text' => 'Item 1'
                 ]
             ],
-            'formOptions' => ['alternatives' => [
+            'formOptions' => ['associations' => [
                 'id' => ['id1', 'id2']
             ]]
         ]);
 
         $html = $this->renderForm($form);
-        $this->assertStringContainsString('alternatives: {"id":["id1","id2"]}', $html);
+        $this->assertStringContainsString('associations: {"id":["id1","id2"]}', $html);
     }
 
     protected function setUp(): void
