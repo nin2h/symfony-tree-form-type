@@ -54,11 +54,13 @@ trait TestTrait
         /** @var FormFactory $formFactory */
         $formFactory = static::$container->get('form.factory');
 
+        $fieldOptions = array_merge($options['formOptions'] ?? [], [
+            'tree' => $options['tree'],
+            'class' => 'EntityClass',
+        ]);
+
         return $formFactory->createBuilder(FormType::class, ['tree_field' => $options['data']])
-            ->add('tree_field', MrTreeType::class, array_merge($options['formOptions'], [
-                'tree' => $options['tree'],
-                'class' => 'EntityClass',
-            ]))
+            ->add('tree_field', MrTreeType::class, $fieldOptions)
             ->getForm();
     }
 

@@ -118,6 +118,7 @@ class MrTreeType extends AbstractType
         $view->vars['multiple'] = $options['multiple'];
         $view->vars['id_separator'] = $options['id_separator'];
         $view->vars['id_prefix'] = $options['id_prefix'];
+        $view->vars['alternatives'] = $options['alternatives'];
     }
 
     public function configureOptions(OptionsResolver $resolver)
@@ -132,12 +133,22 @@ class MrTreeType extends AbstractType
             'up_cascade_select' => false,
             'class' =>  null,
             'compound' => false,
-            'data_class' => null
+            'data_class' => null,
+            'alternatives' => []
         ]);
 
         $resolver->setRequired(['tree']);
         $resolver->setAllowedTypes('tree', 'array');
         $resolver->setAllowedTypes('id_separator', ['string', 'bool']);
+
+        $resolver->setAllowedTypes('alternatives', 'array[]');
+        $resolver->setAllowedValues('alternatives', function (array $alternatives) {
+            $filtered = array_filter($alternatives, function (array $value): bool {
+                return !!array_filter($value, 'is_string');
+            });
+
+            return count($filtered) === count($alternatives);
+        });
 
         $resolver->setNormalizer('tree', function (Options $options, array $tree): array {
             return array_map(function ($item) {
