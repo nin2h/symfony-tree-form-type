@@ -43,12 +43,12 @@ var MrTreeWidget = /** @class */ (function () {
             _this.onChanged(data);
             if (data.node) {
                 _this.runUpCascade(data.node);
+                _this.initNodeAssociation(data.node);
             }
         });
         this.$tree.on('ready.jstree', function (e, data) {
             _this.jstree = data.instance;
             _this.selectFromFieldValue();
-            _this.initNodeAssociations();
             _this.options.callback && _this.options.callback(_this);
         });
         this.$tree.on('refresh.jstree', function (e, data) {
@@ -56,18 +56,8 @@ var MrTreeWidget = /** @class */ (function () {
         });
         this.$tree.jstree(this.getJsTreeOptions());
     };
-    MrTreeWidget.prototype.initNodeAssociations = function () {
-        var _this = this;
-        this.options.data.forEach(function (item) {
-            if (!item.associations) {
-                return;
-            }
-            var node = _this.jstree.get_node(item.id, true);
-            node.find('[data-association-trigger]').on('click', function (e, data) {
-                e.preventDefault();
-                _this.jstree.select_node(item.associations);
-            });
-        });
+    MrTreeWidget.prototype.initNodeAssociation = function (item) {
+        this.jstree.select_node(item.original.associations);
     };
     MrTreeWidget.prototype.runUpCascade = function (node) {
         var _this = this;

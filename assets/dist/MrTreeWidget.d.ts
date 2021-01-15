@@ -17,7 +17,7 @@ export default class MrTreeWidget {
     getOptions(): Options;
     init(options: Options): void;
     protected initJstree(): void;
-    protected initNodeAssociations(): void;
+    protected initNodeAssociation(item: JstreeDataNode): void;
     protected runUpCascade(node: any): void;
     protected selectFromFieldValue(): void;
     protected getInitialFieldValue(): Array<string>;
