@@ -57,6 +57,7 @@ export default class MrTreeWidget {
         this.$tree.on('ready.jstree', (e, data) => {
             this.jstree = data.instance;
             this.selectFromFieldValue();
+            this.initAssociations();
             this.options.callback && this.options.callback(this);
         });
 
@@ -65,6 +66,24 @@ export default class MrTreeWidget {
         });
 
         this.$tree.jstree(this.getJsTreeOptions());
+    }
+
+    protected initAssociations() {
+        this.options.data.forEach(item => {
+            if (item.associations && item.associations.length) {
+                this.initNodeAssociation(item);
+            }
+        });
+    }
+
+    protected initNodeAssociation(item: JstreeDataNode) {
+        const node: JQuery = this.jstree.get_node(item.id, true);
+        node
+            .find('[data-association-trigger]')
+            .on('click', (e, data) => {
+                e.preventDefault();
+                this.jstree.select_node(item.associations);
+            });
     }
 
     protected runUpCascade(node: any) {
