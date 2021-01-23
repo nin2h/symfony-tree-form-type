@@ -97,7 +97,10 @@ var MrTreeWidget = /** @class */ (function () {
             return;
         }
         node.parents.forEach(function (parent) {
-            _this.jstree.select_node(parent);
+            var parentNode = _this.jstree.get_node(parent);
+            if (parentNode.original && parentNode.original.canBeSelected) {
+                _this.jstree.select_node(parent);
+            }
         });
     };
     MrTreeWidget.prototype.selectFromFieldValue = function () {
