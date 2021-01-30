@@ -78,7 +78,7 @@ var MrTreeWidget = /** @class */ (function () {
         var _this = this;
         var $nodeLink = this.jstree.get_node(nodeId, true).find('> .jstree-anchor');
         $(this.options.nodeAssociationTriggerHtml)
-            .appendTo($nodeLink)
+            .insertAfter($nodeLink)
             .on('click', function (e, event) {
             e.preventDefault();
             _this.jstree.select_node(associations);

@@ -92,7 +92,7 @@ export default class MrTreeWidget {
     protected insertTriggerHtml(nodeId: string, associations: Array<string>) {
         const $nodeLink = this.jstree.get_node(nodeId, true).find('> .jstree-anchor');
         $(this.options.nodeAssociationTriggerHtml)
-            .appendTo($nodeLink)
+            .insertAfter($nodeLink)
             .on('click', (e, event) => {
                 e.preventDefault();
                 this.jstree.select_node(associations);
