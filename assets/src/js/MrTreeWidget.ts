@@ -134,11 +134,17 @@ export default class MrTreeWidget {
         const fieldValue = this.$input.val() as string;
         const arrayValue = fieldValue.split(',');
         return this.options.data.filter(item => {
-            return arrayValue.indexOf(this.getTrimmedId(item)) !== -1;
+            return arrayValue.indexOf(this.getSeparatedId(item.id)) !== -1;
         })
             .map(item => item.id);
     }
 
+    /**
+     * Is not used for now
+     * @deprecated
+     * @param item
+     * @protected
+     */
     protected getTrimmedId(item: JstreeDataNode): string {
         const withoutPrefix = (''+ item.id).replace(this.options.idPrefix, '');
         return this.getSeparatedId(withoutPrefix);
