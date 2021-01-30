@@ -51,7 +51,7 @@ class TreeValuesViewTransformer implements DataTransformerInterface
 
     protected function attachPrefixToId($id): string
     {
-        return $this->formOptions['id_prefix'] . $this->formOptions['id_separator'] . $id;
+        return $this->formOptions['id_prefix'] . $id;
     }
 
     public function reverseTransform($value)
