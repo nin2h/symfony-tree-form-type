@@ -98,9 +98,12 @@ var MrTreeWidget = /** @class */ (function () {
         }
         node.parents.forEach(function (parent) {
             var parentNode = _this.jstree.get_node(parent);
-            if (parentNode.original && parentNode.original.canBeSelected) {
-                _this.jstree.select_node(parent);
+            if (parentNode.original) {
+                if (parentNode.original.canBeSelected === false) {
+                    return;
+                }
             }
+            _this.jstree.select_node(parent);
         });
     };
     MrTreeWidget.prototype.selectFromFieldValue = function () {
@@ -112,10 +115,16 @@ var MrTreeWidget = /** @class */ (function () {
         var fieldValue = this.$input.val();
         var arrayValue = fieldValue.split(',');
         return this.options.data.filter(function (item) {
-            return arrayValue.indexOf(_this.getTrimmedId(item)) !== -1;
+            return arrayValue.indexOf(_this.getSeparatedId(item.id)) !== -1;
         })
             .map(function (item) { return item.id; });
     };
+    /**
+     * Is not used for now
+     * @deprecated
+     * @param item
+     * @protected
+     */
     MrTreeWidget.prototype.getTrimmedId = function (item) {
         var withoutPrefix = ('' + item.id).replace(this.options.idPrefix, '');
         return this.getSeparatedId(withoutPrefix);
