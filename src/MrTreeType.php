@@ -19,72 +19,21 @@ class MrTreeType extends AbstractType
      * @var EntityManagerInterface
      */
     private $em;
+    /**
+     * @var TreeValuesViewTransformer
+     */
+    private $viewTransformer;
 
-    public function __construct(EntityManagerInterface $em)
+    public function __construct(EntityManagerInterface $em, TreeValuesViewTransformer $viewTransformer)
     {
         $this->em = $em;
+        $this->viewTransformer = $viewTransformer;
     }
 
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->addViewTransformer(new CallbackTransformer(
-            function ($normValue) use ($options) {
-                if ($normValue instanceof Collection) {
-                    return $normValue->map(function ($itemValue) {
-                        return $itemValue->getId();
-                    })->toArray();
-                }
-
-                if ($options['multiple']) {
-                    if (!$normValue) {
-                        return [];
-                    }
-                    return $normValue->map(function ($itemValue) {
-                        return $itemValue->getId();
-                    })->toArray();
-                }
-
-                return $normValue ? $normValue->getId() : '';
-            },
-            function ($viewValue) use ($options) {
-                if (!$viewValue) {
-                    if ($options['multiple']) {
-                        return [];
-                    }
-
-                    return null;
-                }
-
-                $repository = $this->em->getRepository($options['class']);
-
-                if ($options['multiple']) {
-                    $ids = $this->multipleViewValueToIds($viewValue, $options);
-                    return new ArrayCollection($repository->findBy(['id' => $ids]));
-                }
-
-                $viewValue = $this->formatNodeViewId($viewValue, $options);
-                return $repository->find($viewValue);
-            }
-        ));
-    }
-
-    protected function multipleViewValueToIds(string $viewValue, array $options): array
-    {
-        $viewValue = explode(',', $viewValue);
-        return array_map(function (string $idWithPrefix) use ($options): string {
-            return $this->formatNodeViewId($idWithPrefix, $options);
-        }, $viewValue);
-    }
-
-    protected function formatNodeViewId(string $viewId, array $options): string
-    {
-        $withoutPrefix = str_replace($options['id_prefix'], '', $viewId);
-
-        if ($options['id_separator'] === '') {
-            return $withoutPrefix;
-        }
-
-        return explode($options['id_separator'], $withoutPrefix)[0];
+        $this->viewTransformer->setOptions($options);
+        $builder->addViewTransformer($this->viewTransformer);
     }
 
     public function setEntityManager($em)

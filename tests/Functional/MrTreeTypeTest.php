@@ -121,6 +121,40 @@ class MrTreeTypeTest extends KernelTestCase
         $this->assertEquals(1, $data['tree_field'][0]->getId());
     }
 
+    public function testViewReverseTransformer()
+    {
+        $entity = $this->createEntity(1);
+
+//        $repository = $this->makeRepositoryMock(
+//            'findBy',
+//            ['id' => [1]],
+//            [$entity]
+//        );
+
+//        $this->setEntityManagerToTreeType($repository);
+
+        $form = $this->makeForm([
+            'data' => new ArrayCollection([$entity]),
+            'tree' => [
+                [
+                    'id' => 1,
+                    'parent' => '#',
+                    'text' => 'Item 1'
+                ]
+            ],
+            'formOptions' => ['multiple' => true, 'id_prefix' => 'prefix']
+        ]);
+
+        $html = $this->renderForm($form);
+        $this->assertStringContainsString('prefix1', $html);
+
+//        $form->submit(['tree_field' => '1,2']);
+//        $form->isValid();
+//        $data = $form->getData();
+//        $this->assertEquals(1, $data['tree_field'][0]->getId());
+    }
+
+
     public function testRenderedHtmlContainsHiddenInput()
     {
         $form = $this->makeForm([

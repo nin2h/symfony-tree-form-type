@@ -5,6 +5,7 @@ namespace Mrself\TreeTypeBundle\Tests\Functional;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\EntityManager;
 use Mrself\TreeTypeBundle\MrTreeType;
+use Mrself\TreeTypeBundle\TreeValuesViewTransformer;
 use Symfony\Component\Form\Extension\Core\Type\FormType;
 use Symfony\Component\Form\FormFactory;
 use Symfony\Component\Form\FormInterface;
@@ -45,7 +46,7 @@ trait TestTrait
             ->willReturn($repository);
 
         /** @var MrTreeType $mrTreeType */
-        $mrTreeType = static::$container->get(MrTreeType::class);
+        $mrTreeType = static::$container->get(TreeValuesViewTransformer::class);
         $mrTreeType->setEntityManager($em);
     }
 

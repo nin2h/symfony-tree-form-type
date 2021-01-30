@@ -6,3 +6,5 @@ services:
 
   Mrself\TreeTypeBundle\MrTreeType:
     class: Mrself\TreeTypeBundle\MrTreeType
+
+  Mrself\TreeTypeBundle\TreeValuesViewTransformer: ~
