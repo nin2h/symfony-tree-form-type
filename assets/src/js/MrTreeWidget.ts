@@ -115,9 +115,13 @@ export default class MrTreeWidget {
 
         node.parents.forEach((parent: any) => {
             const parentNode = this.jstree.get_node(parent);
-            if (parentNode.original && parentNode.original.canBeSelected) {
-                this.jstree.select_node(parent);
+            if (parentNode.original) {
+                if (parentNode.original.canBeSelected === false) {
+                    return;
+                }
             }
+
+            this.jstree.select_node(parent);
         });
     }
 
