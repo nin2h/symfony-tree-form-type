@@ -207,7 +207,9 @@ var MrTreeWidget = /** @class */ (function () {
     };
     MrTreeWidget.prototype.sort = function (a, b) {
         if (a.original.weight !== undefined && b.original.weight !== undefined) {
-            return this.compareByWeight(a, b);
+            if (a.original.weight !== false && b.original.weight !== false) {
+                return this.compareByWeight(a, b);
+            }
         }
         return this.compareAlphabetically(a, b);
     };
