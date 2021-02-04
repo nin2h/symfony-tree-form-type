@@ -22,7 +22,7 @@ test('one association is auto selected on the condition attribute select', (cb) 
         callback: (instance: MrTreeWidget) => {
             testWidget.$tree.find('[data-association-trigger]').trigger('click');
             const selectedNodes = instance.getJstree().get_selected();
-            expect(selectedNodes).toEqual(['2', '1']);
+            expect(selectedNodes).toEqual(['2']);
             cb();
         }
     });
@@ -54,7 +54,7 @@ test('one association is auto selected on the child (hidden) condition attribute
             instance.getJstree().open_node('1');
             testWidget.$tree.find('[data-association-trigger]').trigger('click');
             const selectedNodes = instance.getJstree().get_selected();
-            expect(selectedNodes).toEqual(['3', '2']);
+            expect(selectedNodes).toEqual(['3']);
             cb();
         }
     });
@@ -80,7 +80,7 @@ test('one association options is taken from app options if it does not exist for
         callback: (instance: MrTreeWidget) => {
             testWidget.$tree.find('[data-association-trigger]').trigger('click');
             const selectedNodes = instance.getJstree().get_selected();
-            expect(selectedNodes).toEqual(['2', '1']);
+            expect(selectedNodes).toEqual(['2']);
             cb();
         }
     });
