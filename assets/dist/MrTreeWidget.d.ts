@@ -19,6 +19,14 @@ export default class MrTreeWidget {
     getOptions(): Options;
     init(options: Options): void;
     protected initJstree(): void;
+    /**
+     * Select/unselect the nodes with the same ids but which are in different folders
+     * @param {JstreeDataNode} node
+     * @protected
+     */
+    protected syncDuplicates(node: JstreeDataNode): void;
+    protected toggleNode(node: JstreeDataNode, state: boolean): void;
+    protected extractRealIdFromNode(node: JstreeDataNode): string;
     protected initRootNodesAssociation(): void;
     protected initNodeAssociation(item: JstreeDataNode): void;
     protected insertTriggerHtml(nodeId: string, associations: Array<string>): void;

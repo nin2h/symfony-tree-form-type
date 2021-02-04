@@ -53,6 +53,7 @@ export default class MrTreeWidget {
 
             if (data.node) {
                 this.runUpCascade(data.node);
+                this.syncDuplicates(data.node);
             }
         });
 
@@ -72,6 +73,41 @@ export default class MrTreeWidget {
         });
 
         this.$tree.jstree(this.getJsTreeOptions());
+    }
+
+    /**
+     * Select/unselect the nodes with the same ids but which are in different folders
+     * @param {JstreeDataNode} node
+     * @protected
+     */
+    protected syncDuplicates(node: JstreeDataNode) {
+        const realId = this.extractRealIdFromNode(node);
+        if (!realId) {
+            return;
+        }
+
+        const nodes = this.jstree.get_json('#', {flat: true});
+        nodes.forEach((listNode: JstreeDataNode) => {
+            if (listNode.id.indexOf(realId) === 0) {
+                this.toggleNode(listNode, node.state.selected);
+            }
+        })
+    }
+
+    protected toggleNode(node: JstreeDataNode, state: boolean) {
+        if (state) {
+            this.jstree.select_node(node, false);
+        } else {
+            this.jstree.deselect_node(node, false);
+        }
+    }
+
+    protected extractRealIdFromNode(node: JstreeDataNode) {
+        const parts = node.id.split('_');
+        if (parts.length !== 2) {
+            return null;
+        }
+        return parts[0];
     }
 
     protected initRootNodesAssociation() {

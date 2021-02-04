@@ -45,6 +45,7 @@ var MrTreeWidget = /** @class */ (function () {
             _this.onChanged(data);
             if (data.node) {
                 _this.runUpCascade(data.node);
+                _this.syncDuplicates(data.node);
             }
         });
         this.$tree.on('open_node.jstree', function (e, data) {
@@ -60,6 +61,39 @@ var MrTreeWidget = /** @class */ (function () {
             _this.jstree = data.instance;
         });
         this.$tree.jstree(this.getJsTreeOptions());
+    };
+    /**
+     * Select/unselect the nodes with the same ids but which are in different folders
+     * @param {JstreeDataNode} node
+     * @protected
+     */
+    MrTreeWidget.prototype.syncDuplicates = function (node) {
+        var _this = this;
+        var realId = this.extractRealIdFromNode(node);
+        if (!realId) {
+            return;
+        }
+        var nodes = this.jstree.get_json('#', { flat: true });
+        nodes.forEach(function (listNode) {
+            if (listNode.id.indexOf(realId) === 0) {
+                _this.toggleNode(listNode, node.state.selected);
+            }
+        });
+    };
+    MrTreeWidget.prototype.toggleNode = function (node, state) {
+        if (state) {
+            this.jstree.select_node(node, false);
+        }
+        else {
+            this.jstree.deselect_node(node, false);
+        }
+    };
+    MrTreeWidget.prototype.extractRealIdFromNode = function (node) {
+        var parts = node.id.split('_');
+        if (parts.length !== 2) {
+            return null;
+        }
+        return parts[0];
     };
     MrTreeWidget.prototype.initRootNodesAssociation = function () {
         this.initNodeAssociation(this.jstree.get_node('#'));

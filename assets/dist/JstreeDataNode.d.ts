@@ -4,4 +4,7 @@ export default interface JstreeDataNode {
     associations?: Array<string>;
     original?: JstreeDataNode;
     children?: Array<string>;
+    state?: {
+        selected?: boolean;
+    };
 }
