@@ -88,7 +88,7 @@ export default class MrTreeWidget {
 
         const nodes = this.jstree.get_json('#', {flat: true});
         nodes.forEach((listNode: JstreeDataNode) => {
-            if (listNode.id.indexOf(realId) === 0) {
+            if (this.extractRealIdFromNode(listNode) === realId) {
                 this.toggleNode(listNode, node.state.selected);
             }
         })

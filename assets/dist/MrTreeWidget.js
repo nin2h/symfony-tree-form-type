@@ -75,7 +75,7 @@ var MrTreeWidget = /** @class */ (function () {
         }
         var nodes = this.jstree.get_json('#', { flat: true });
         nodes.forEach(function (listNode) {
-            if (listNode.id.indexOf(realId) === 0) {
+            if (_this.extractRealIdFromNode(listNode) === realId) {
                 _this.toggleNode(listNode, node.state.selected);
             }
         });

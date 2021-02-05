@@ -52,3 +52,33 @@ test('the node duplication is auto-deselected on this this node deselect', cb =>
         }
     });
 });
+
+test('a node duplicate is defined by a full app id', cb => {
+    TestWidget.init({
+        globalOptions: {
+            data: [
+                {
+                    id: '1_hash1',
+                    parent: '#',
+                    text: 'Item 1 with hash1',
+                },
+                {
+                    id: '1_hash2',
+                    parent: '#',
+                    text: 'Item 2 with hash2',
+                },
+                {
+                    id: '11_hash1',
+                    parent: '#',
+                    text: 'Item 11 with hash1',
+                },
+            ]
+        },
+        callback: (instance: MrTreeWidget) => {
+            instance.getJstree().select_node('1_hash1');
+            const selectedNodes = instance.getJstree().get_selected();
+            expect(selectedNodes).toEqual(['1_hash1', '1_hash2',]);
+            cb();
+        }
+    });
+});
