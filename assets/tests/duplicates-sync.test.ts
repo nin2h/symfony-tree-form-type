@@ -15,7 +15,8 @@ test('the node duplication is auto-selected on this this node select', cb => {
                     parent: '#',
                     text: 'Item 2 with hash2'
                 },
-            ]
+            ],
+            idSeparator: '_',
         },
         callback: (instance: MrTreeWidget) => {
             instance.getJstree().select_node('1_hash1');
@@ -42,7 +43,8 @@ test('the node duplication is auto-deselected on this this node deselect', cb =>
                     text: 'Item 2 with hash2',
                     state: {selected: true},
                 },
-            ]
+            ],
+            idSeparator: '_',
         },
         callback: (instance: MrTreeWidget) => {
             instance.getJstree().deselect_node('1_hash1');
@@ -72,7 +74,8 @@ test('a node duplicate is defined by a full app id', cb => {
                     parent: '#',
                     text: 'Item 11 with hash1',
                 },
-            ]
+            ],
+            idSeparator: '_',
         },
         callback: (instance: MrTreeWidget) => {
             instance.getJstree().select_node('1_hash1');
