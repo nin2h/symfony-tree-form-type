@@ -103,7 +103,7 @@ export default class MrTreeWidget {
     }
 
     protected extractRealIdFromNode(node: JstreeDataNode) {
-        const parts = node.id.split('_');
+        const parts = node.id.split(this.options.idSeparator);
         if (parts.length !== 2) {
             return node.id;
         }
