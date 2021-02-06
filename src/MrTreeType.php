@@ -83,11 +83,13 @@ class MrTreeType extends AbstractType
             'class' =>  null,
             'compound' => false,
             'data_class' => null,
-            'associations' => []
+            'associations' => [],
+            'dependencies' => [],
         ]);
 
         $resolver->setRequired(['tree']);
         $resolver->setAllowedTypes('tree', 'array');
+        $resolver->setAllowedTypes('dependencies', 'array');
         $resolver->setAllowedTypes('id_separator', ['string', 'bool']);
 
         $resolver->setAllowedTypes('associations', 'array[]');

@@ -20,6 +20,7 @@ export default class MrTreeWidget {
             name: 'mrTreeWidget',
             data: {},
             associations: {},
+            dependencies: {},
             nodeAssociationTriggerHtml: '<span data-association-trigger>Select associations</span>'
         };
     }
@@ -54,6 +55,7 @@ export default class MrTreeWidget {
             if (data.node) {
                 this.runUpCascade(data.node);
                 this.syncDuplicates(data.node);
+                this.selectDependencies(data.node);
             }
         });
 
@@ -73,6 +75,26 @@ export default class MrTreeWidget {
         });
 
         this.$tree.jstree(this.getJsTreeOptions());
+    }
+
+    selectDependencies(node: JstreeDataNode) {
+        if (!node.state.selected) {
+            return;
+        }
+
+        const dependencies = this.options.dependencies[this.getTrimmedId(node)];
+        if (!dependencies) {
+            return;
+        }
+
+        const nodes = this.jstree.get_json('#', {flat: true});
+        nodes.forEach((listNode: JstreeDataNode) => {
+            dependencies.forEach((dependencyId: bigint | string) => {
+                if (this.getTrimmedIdFromId(dependencyId) === this.getTrimmedId(listNode)) {
+                    this.jstree.select_node(listNode.id);
+                }
+            });
+        });
     }
 
     /**
@@ -177,12 +199,20 @@ export default class MrTreeWidget {
 
     /**
      * Is not used for now
-     * @deprecated
      * @param item
      * @protected
      */
     protected getTrimmedId(item: JstreeDataNode): string {
-        const withoutPrefix = (''+ item.id).replace(this.options.idPrefix, '');
+        return this.getTrimmedIdFromId(item.id);
+    }
+
+    /**
+     * Returns a node id without a prefix and right-trimmed by an id separator
+     * @param id
+     * @protected
+     */
+    protected getTrimmedIdFromId(id: string | bigint) {
+        const withoutPrefix = (''+ id).replace(this.options.idPrefix, '');
         return this.getSeparatedId(withoutPrefix);
     }
 

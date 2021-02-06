@@ -16,5 +16,8 @@ export default interface Options {
     associations?: {
         [p: string]: Array<string>;
     };
+    dependencies?: {
+        [p: string]: Array<string>;
+    };
     nodeAssociationTriggerHtml?: string;
 }

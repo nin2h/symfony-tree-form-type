@@ -18,6 +18,7 @@ var MrTreeWidget = /** @class */ (function () {
             name: 'mrTreeWidget',
             data: {},
             associations: {},
+            dependencies: {},
             nodeAssociationTriggerHtml: '<span data-association-trigger>Select associations</span>'
         };
     };
@@ -46,6 +47,7 @@ var MrTreeWidget = /** @class */ (function () {
             if (data.node) {
                 _this.runUpCascade(data.node);
                 _this.syncDuplicates(data.node);
+                _this.selectDependencies(data.node);
             }
         });
         this.$tree.on('open_node.jstree', function (e, data) {
@@ -61,6 +63,24 @@ var MrTreeWidget = /** @class */ (function () {
             _this.jstree = data.instance;
         });
         this.$tree.jstree(this.getJsTreeOptions());
+    };
+    MrTreeWidget.prototype.selectDependencies = function (node) {
+        var _this = this;
+        if (!node.state.selected) {
+            return;
+        }
+        var dependencies = this.options.dependencies[this.getTrimmedId(node)];
+        if (!dependencies) {
+            return;
+        }
+        var nodes = this.jstree.get_json('#', { flat: true });
+        nodes.forEach(function (listNode) {
+            dependencies.forEach(function (dependencyId) {
+                if (_this.getTrimmedIdFromId(dependencyId) === _this.getTrimmedId(listNode)) {
+                    _this.jstree.select_node(listNode.id);
+                }
+            });
+        });
     };
     /**
      * Select/unselect the nodes with the same ids but which are in different folders
@@ -89,9 +109,9 @@ var MrTreeWidget = /** @class */ (function () {
         }
     };
     MrTreeWidget.prototype.extractRealIdFromNode = function (node) {
-        var parts = node.id.split('_');
+        var parts = node.id.split(this.options.idSeparator);
         if (parts.length !== 2) {
-            return null;
+            return node.id;
         }
         return parts[0];
     };
@@ -155,12 +175,19 @@ var MrTreeWidget = /** @class */ (function () {
     };
     /**
      * Is not used for now
-     * @deprecated
      * @param item
      * @protected
      */
     MrTreeWidget.prototype.getTrimmedId = function (item) {
-        var withoutPrefix = ('' + item.id).replace(this.options.idPrefix, '');
+        return this.getTrimmedIdFromId(item.id);
+    };
+    /**
+     * Returns a node id without a prefix and right-trimmed by an id separator
+     * @param id
+     * @protected
+     */
+    MrTreeWidget.prototype.getTrimmedIdFromId = function (id) {
+        var withoutPrefix = ('' + id).replace(this.options.idPrefix, '');
         return this.getSeparatedId(withoutPrefix);
     };
     MrTreeWidget.prototype.getSeparatedId = function (id) {

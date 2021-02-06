@@ -13,12 +13,14 @@ export default class MrTreeWidget {
         name: string;
         data: {};
         associations: {};
+        dependencies: {};
         nodeAssociationTriggerHtml: string;
     };
     static init(options: Options): MrTreeWidget;
     getOptions(): Options;
     init(options: Options): void;
     protected initJstree(): void;
+    selectDependencies(node: JstreeDataNode): void;
     /**
      * Select/unselect the nodes with the same ids but which are in different folders
      * @param {JstreeDataNode} node
@@ -36,11 +38,16 @@ export default class MrTreeWidget {
     protected getInitialFieldValue(): Array<string>;
     /**
      * Is not used for now
-     * @deprecated
      * @param item
      * @protected
      */
     protected getTrimmedId(item: JstreeDataNode): string;
+    /**
+     * Returns a node id without a prefix and right-trimmed by an id separator
+     * @param id
+     * @protected
+     */
+    protected getTrimmedIdFromId(id: string | bigint): string;
     protected getSeparatedId(id: string): string;
     protected onChanged(data: any): void;
     protected setSelectedToInput(): void;

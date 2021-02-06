@@ -12,7 +12,8 @@
             upCascadeSelect: !!{{ up_cascade_select ? 1 : 0 }},
             idSeparator: '{{ id_separator }}',
             idPrefix: '{{ id_prefix }}',
-            associations: {{ associations | json_encode | raw }}
+            associations: {{ associations | json_encode | raw }},
+            dependencies: {{ dependencies | json_encode | raw }},
         };
     </script>
 {% endblock %}
