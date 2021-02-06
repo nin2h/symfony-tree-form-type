@@ -68,6 +68,7 @@ class MrTreeType extends AbstractType
         $view->vars['id_separator'] = $options['id_separator'];
         $view->vars['id_prefix'] = $options['id_prefix'];
         $view->vars['associations'] = $options['associations'];
+        $view->vars['dependencies'] = $options['dependencies'];
     }
 
     public function configureOptions(OptionsResolver $resolver)
