@@ -1,13 +1,13 @@
 {
     "name": "mrself/symfony-tree-form-type",
-    "version": "1.7.1",
+    "version": "1.7.2",
     "type": "project",
     "license": "MIT",
     "description": "Symfony package for tree form type",
     "require": {
         "php": "^7.2.0",
-        "symfony/form": "^4",
-        "symfony/framework-bundle": "^4",
+        "symfony/form": ">=4.3.11",
+        "symfony/framework-bundle": ">=4.3.11",
         "symfony/yaml": "^5.2"
     },
     "require-dev": {
