@@ -32,8 +32,9 @@ class MrTreeType extends AbstractType
 
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $this->viewTransformer->setOptions($options);
-        $builder->addViewTransformer($this->viewTransformer);
+        $transformer = new TreeValuesViewTransformer($this->em);
+        $transformer->setOptions($options);
+        $builder->addViewTransformer($transformer);
     }
 
     public function setEntityManager($em)
