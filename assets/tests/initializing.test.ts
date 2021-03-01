@@ -71,6 +71,32 @@ test('it trims the right part of id using a separator', (cb) => {
     });
 });
 
+test('it works with selected node which has unselected parent', (cb) => {
+    const testWidget = TestWidget.init({
+        globalOptions: {
+            data: [
+                {
+                    id: '1',
+                    parent: '2',
+                    text: 'Item 1'
+                },
+
+                {
+                    id: '2',
+                    parent: '#',
+                    text: 'Item 2',
+                    canBeSelected: false,
+                }
+            ]
+        },
+        value: '1',
+        callback: (instance: MrTreeWidget) => {
+            expect(testWidget.getNodes().length).toEqual(2);
+            cb();
+        }
+    });
+});
+
 test.skip('it trims the left part (id_prefix)', (cb) => {
     TestWidget.init({
         globalOptions: {
