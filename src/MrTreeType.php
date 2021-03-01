@@ -47,7 +47,7 @@ class MrTreeType extends AbstractType
 
         $tree = $options['tree'];
         $data = $form->getViewData();
-        $tree = array_map(function (array $item) use ($options, $data): array {
+        /*$tree = array_map(function (array $item) use ($options, $data): array {
             if ($options['multiple']) {
                 if ($data) {
                     if (in_array($item['id'], $data)) {
@@ -61,7 +61,7 @@ class MrTreeType extends AbstractType
             }
 
             return $item;
-        }, $tree);
+        }, $tree);*/
         $view->vars['tree'] = $tree;
         $view->vars['up_cascade_select'] = $options['up_cascade_select'];
         $view->vars['multiple'] = $options['multiple'];
