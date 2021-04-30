@@ -47,22 +47,6 @@ class MrTreeType extends AbstractType
         $view->vars['field_id'] = md5($form->getName()) . 'mrTreeWidget';
 
         $tree = $options['tree'];
-        $data = $form->getViewData();
-        /*$tree = array_map(function (array $item) use ($options, $data): array {
-            if ($options['multiple']) {
-                if ($data) {
-                    if (in_array($item['id'], $data)) {
-                        $item['state'] = ['selected' => true];
-                    }
-                }
-            } else {
-                if ($item['id'] === $data) {
-                    $item['state'] = ['selected' => true];
-                }
-            }
-
-            return $item;
-        }, $tree);*/
         $view->vars['tree'] = $tree;
         $view->vars['up_cascade_select'] = $options['up_cascade_select'];
         $view->vars['multiple'] = $options['multiple'];
