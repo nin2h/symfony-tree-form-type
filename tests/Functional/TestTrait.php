@@ -46,7 +46,7 @@ trait TestTrait
             ->willReturn($repository);
 
         /** @var MrTreeType $mrTreeType */
-        $mrTreeType = static::$container->get(TreeValuesViewTransformer::class);
+        $mrTreeType = static::$container->get(MrTreeType::class);
         $mrTreeType->setEntityManager($em);
     }
 
