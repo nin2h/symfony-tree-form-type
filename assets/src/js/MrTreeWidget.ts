@@ -103,14 +103,14 @@ export default class MrTreeWidget {
      * @protected
      */
     protected syncDuplicates(node: JstreeDataNode) {
-        const realId = this.extractRealIdFromNode(node);
+        const realId = this.getSeparatedId(node.id);
         if (!realId) {
             return;
         }
 
         const nodes = this.jstree.get_json('#', {flat: true});
         nodes.forEach((listNode: JstreeDataNode) => {
-            if (this.extractRealIdFromNode(listNode) === realId) {
+            if (this.getSeparatedId(listNode.id) === realId) {
                 this.toggleNode(listNode, node.state.selected);
             }
         })
@@ -217,11 +217,16 @@ export default class MrTreeWidget {
     }
 
     protected getSeparatedId(id: string): string {
-        if (this.options.idSeparator !== '') {
-            return ('' + id).split(this.options.idSeparator)[0];
+        if (this.options.idSeparator === '') {
+            return '' + id;
         }
 
-        return id;
+        const parts = ('' + id).split(this.options.idSeparator);
+        if (parts.length === 2) {
+            return parts[0];
+        }
+
+        return '' + id;
     }
 
     protected onChanged(data: any) {
