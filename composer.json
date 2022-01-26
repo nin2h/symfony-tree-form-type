@@ -1,6 +1,6 @@
 {
     "name": "nin2h/symfony-tree-form-type",
-    "version": "1.7.7",
+    "version": "1.7.8",
     "type": "project",
     "license": "MIT",
     "description": "Symfony package for tree form type",
